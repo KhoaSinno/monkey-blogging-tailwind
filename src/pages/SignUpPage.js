@@ -33,11 +33,9 @@ const SignUpPage = () => {
         mode: "onChange",
         resolver: yupResolver(schema),
     });
-    console.log("🚀 ~ file: SignUpPage.js:32 ~ SignUpPage ~ errors:", errors)
     const [toggle, setToggle] = useState(false);
 
     const handleSignUp = (values) => {
-        alert('me')
         console.log(values)
     }
     const changeToggle = (e) => {
@@ -59,6 +57,7 @@ const SignUpPage = () => {
                             placeholder='Your fullname'
                             content='Fullname:'
                             typeInput='text'
+                            errors={errors}
                         ></Field>
                         <Field
                             id='email'
@@ -66,6 +65,7 @@ const SignUpPage = () => {
                             placeholder='Your email'
                             content='Email address:'
                             typeInput='text'
+                            errors={errors}
                         ></Field>
                         <Field
                             id='password'
@@ -73,6 +73,7 @@ const SignUpPage = () => {
                             placeholder='Your password'
                             content='Password:'
                             isToggleShowHide
+                            errors={errors}
                         >{toggle ? <IconEyeOpen onClick={changeToggle}></IconEyeOpen> : <IconEyeClose onClick={changeToggle}></IconEyeClose>}</Field>
                         <Button type="submit" disabled={isSubmitting} isSubmitting={isSubmitting}>Sign Up</Button>
                     </form>
