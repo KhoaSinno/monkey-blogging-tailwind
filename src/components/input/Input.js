@@ -1,7 +1,9 @@
-import React from 'react';
+import { UserContext } from 'pages/SignUpPage';
+import React, { useContext } from 'react';
 import { useController } from 'react-hook-form';
 
-const Input = ({ id: name, type, control, ...props }) => {
+const Input = ({ id: name, control, isToggleShowHide, typeInput, ...props }) => {
+    const { type } = useContext(UserContext);
     const {
         field,
         fieldState: { invalid, isTouched, isDirty },
@@ -11,9 +13,8 @@ const Input = ({ id: name, type, control, ...props }) => {
         control,
         defaultValue: ''
     });
-    console.log("🚀 ~ file: Input.js:13 ~ Input ~ field:", field)
     return (
-        <input id={name} type={type} className='w-full px-1 bg-transparent ' {...props} {...field}
+        <input id={name} name={name} type={isToggleShowHide ? `${type}` : `${typeInput}`} className='w-full px-1 bg-transparent ' {...props} {...field}
         />
     );
 };

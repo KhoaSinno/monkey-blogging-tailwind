@@ -2,13 +2,13 @@ import { Input } from 'components/input';
 import { Label } from 'components/label';
 import React from 'react';
 
-const Field = ({ id, content, children, placeholder, control }) => {
+const Field = ({ id, content, children, placeholder, control, isToggleShowHide, typeInput }) => {
     return (
         <div className="flex flex-col gap-2 max-w-[500px] m-[1rem_auto_.3rem]  ">
             <Label htmlFor={id}>{content}</Label>
             <div className='flex justify-center items-center bg-[#F1F1F3] p-2 rounded-lg transition-all shadow-md focus-within:bg-white' >
-                <Input id={id} type="text" placeholder={placeholder}
-                    control={control}
+                <Input id={id} placeholder={placeholder}
+                    control={control} isToggleShowHide={isToggleShowHide} typeInput={typeInput}
                 />
                 {children ? children : null}
             </div>

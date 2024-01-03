@@ -1,11 +1,14 @@
-import { IconEyeOpen } from 'components/icon';
-import React from 'react';
+import { IconEyeClose, IconEyeOpen } from 'components/icon';
+import React, { createContext, useState } from 'react';
 import styled from 'styled-components'
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Field } from 'components/field';
+import { Button } from 'components/button';
+
+export const UserContext = createContext()
 
 const schema = yup.object({
     fullname: yup.string().required("Please enter your fullname"),
@@ -30,66 +33,52 @@ const SignUpPage = () => {
         mode: "onChange",
         resolver: yupResolver(schema),
     });
+    console.log("🚀 ~ file: SignUpPage.js:32 ~ SignUpPage ~ errors:", errors)
+    const [toggle, setToggle] = useState(false);
 
-    const SignUpPageStyles = styled.div`
-    min-height: 100dvh;
-    padding: 40px;
-    .logo {
-        margin: 0 auto 30px;
+    const handleSignUp = (values) => {
+        alert('me')
+        console.log(values)
     }
-    .heading {
-        text-align: center;
-        color: ${props => props.theme.primary};
-        font-weight: 700;
-        font-size: 2rem;
-        letter-spacing: 2px;
+    const changeToggle = (e) => {
+        e.preventDefault()
+        setToggle(!toggle)
     }
-    .form{
-        padding: 0 3rem;
-    }
-    .field{
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-    }
-    .inputGroup {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: ${props => props.theme.grayf1};
-        padding: .8rem;
-        border-radius: .3rem;
-    }
-    .input{
-        width: 100%;
-        background-color: transparent;
-    }
-    .email{
-        font-weight: 700;
-    }
-    `
-
+    const type = toggle ? 'text' : 'password'
+    const data = { type }
     return (
-        <div className='p-10 min-h-dvh'>
-            <div className="container">
-                <img alt="monkey-blogging" srcSet="/logo.png 2x" className='m-[0_auto_30px]' />
-                <h1 className="heading text-center text-[#1DC071] font-bold text-3xl tracking-wide">Monkey Blogging</h1>
-                <form className='form'>
-                    <Field
-                        id='email'
-                        control={control}
-                        placeholder='Your email'
-                        content='Email address:'
-                    ></Field>
-                    <Field
-                        id='password'
-                        control={control}
-                        placeholder='Your password'
-                        content='Password:'
-                    ><IconEyeOpen ></IconEyeOpen></Field>
-                </form>
+        <UserContext.Provider value={data}>
+            <div className='p-10 min-h-dvh'>
+                <div className="container">
+                    <img alt="monkey-blogging" srcSet="/logo.png 2x" className='m-[0_auto_30px]' />
+                    <h1 className="heading text-center text-[#1DC071] font-bold text-3xl tracking-wide">Monkey Blogging</h1>
+                    <form className='p-[0_3rem]' onSubmit={handleSubmit(handleSignUp)}>
+                        <Field
+                            id='fullname'
+                            control={control}
+                            placeholder='Your fullname'
+                            content='Fullname:'
+                            typeInput='text'
+                        ></Field>
+                        <Field
+                            id='email'
+                            control={control}
+                            placeholder='Your email'
+                            content='Email address:'
+                            typeInput='text'
+                        ></Field>
+                        <Field
+                            id='password'
+                            control={control}
+                            placeholder='Your password'
+                            content='Password:'
+                            isToggleShowHide
+                        >{toggle ? <IconEyeOpen onClick={changeToggle}></IconEyeOpen> : <IconEyeClose onClick={changeToggle}></IconEyeClose>}</Field>
+                        <Button type="submit" disabled={isSubmitting} isSubmitting={isSubmitting}>Sign Up</Button>
+                    </form>
+                </div>
             </div>
-        </div>
+        </UserContext.Provider>
     );
 };
 
