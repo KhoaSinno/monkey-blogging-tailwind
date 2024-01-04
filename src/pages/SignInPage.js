@@ -13,10 +13,10 @@ import { addDoc, collection } from 'firebase/firestore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const ContextSignUp = createContext()
+export const ContextSignIn = createContext()
+
 
 const schema = yup.object({
-    fullname: yup.string().required("Please enter your fullname"),
     email: yup
         .string()
         .email("Please enter valid email address")
@@ -27,8 +27,7 @@ const schema = yup.object({
         .required("Please enter your password"),
 });
 
-const SignUpPage = () => {
-
+const SignInPage = () => {
     const navigate = useNavigate();
     const {
         control,
@@ -40,24 +39,17 @@ const SignUpPage = () => {
     });
     const [toggle, setToggle] = useState(false);
 
-    const handleSignUp = async (values) => {
+    // handle function
+    const handleSignIp = (values) => {
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-            await updateProfile(userCredential.user, { displayName: values.fullname });
-            //add new user in doc
-            const newUser = {
-                id: userCredential.user.uid,
-                email: values.email,
-                password: values.password
-            }
-            const usersCollection = collection(db, 'users');
-            await addDoc(usersCollection, newUser);
-            navigate('/')
+            console.log("🚀 ~ file: SignInPage.js:44 ~ handleSignIp ~ values:", values)
+
+            // navigate('/')
             toast.success('Register success!')
         } catch (error) {
             console.error(error);
-            if (error.code === 'auth/email-already-in-use') {
-                toast.error('Email is already in use. Please choose a different email.');
+            if (error.code === 'abc') {
+                toast.error('abc');
             } else {
                 toast.error('An error occurred. Please try again.');
             }
@@ -67,23 +59,17 @@ const SignUpPage = () => {
         e.preventDefault()
         setToggle(!toggle)
     }
+
+    // preparing data
     const type = toggle ? 'text' : 'password'
     const data = { type }
     return (
-        <ContextSignUp.Provider value={data}>
+        <ContextSignIn.Provider value={data}>
             <div className='p-10 min-h-dvh'>
                 <div className="container">
                     <img alt="monkey-blogging" srcSet="/logo.png 2x" className='m-[0_auto_30px]' />
                     <h1 className="heading text-center text-[#1DC071] font-bold text-3xl tracking-wide">Monkey Blogging</h1>
-                    <form className='p-[0_3rem]' onSubmit={handleSubmit(handleSignUp)}>
-                        <Field
-                            id='fullname'
-                            control={control}
-                            placeholder='Your fullname'
-                            content='Fullname:'
-                            typeInput='text'
-                            errors={errors}
-                        ></Field>
+                    <form className='p-[0_3rem]' onSubmit={handleSubmit(handleSignIp)}>
                         <Field
                             id='email'
                             control={control}
@@ -100,12 +86,12 @@ const SignUpPage = () => {
                             isToggleShowHide
                             errors={errors}
                         >{toggle ? <IconEyeOpen onClick={changeToggle}></IconEyeOpen> : <IconEyeClose onClick={changeToggle}></IconEyeClose>}</Field>
-                        <Button type="submit" disabled={isSubmitting} isSubmitting={isSubmitting}>Sign Up</Button>
+                        <Button type="submit" disabled={isSubmitting} isSubmitting={isSubmitting}>Login</Button>
                     </form>
                 </div>
             </div>
-        </ContextSignUp.Provider>
+        </ContextSignIn.Provider>
     );
 };
 
-export default SignUpPage;
+export default SignInPage;

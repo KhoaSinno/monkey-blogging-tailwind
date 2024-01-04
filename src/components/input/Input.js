@@ -1,10 +1,20 @@
-import { UserContext } from 'pages/SignUpPage';
+import { ContextSignUp } from 'pages/SignUpPage';
 import React, { useContext } from 'react';
 import { useController } from 'react-hook-form';
 import PropTypes from 'prop-types';
+import { ContextSignIn } from 'pages/SignInPage';
 
 const Input = ({ id: name, control, isToggleShowHide, typeInput, ...props }) => {
-    const { type } = useContext(UserContext);
+
+    const signUpData = useContext(ContextSignUp);
+    const signInData = useContext(ContextSignIn);
+
+    let type = 'text'
+    if (signUpData) {
+        type = signUpData.type
+    } else {
+        type = signInData.type
+    }
     const {
         field,
         fieldState: { invalid, isTouched, isDirty },
