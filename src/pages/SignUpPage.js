@@ -7,6 +7,11 @@ import * as yup from "yup";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Field } from 'components/field';
 import { Button } from 'components/button';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth, db } from 'firebase-app/firebase-config';
+import { addDoc, collection } from 'firebase/firestore';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const UserContext = createContext()
 
@@ -35,8 +40,27 @@ const SignUpPage = () => {
     });
     const [toggle, setToggle] = useState(false);
 
-    const handleSignUp = (values) => {
-        console.log(values)
+    const handleSignUp = async (values) => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+            await updateProfile(userCredential.user, { displayName: values.fullname });
+            //add new user in doc
+            const newUser = {
+                id: userCredential.user.uid,
+                email: values.email,
+                password: values.password
+            }
+            const usersCollection = collection(db, 'users');
+            await addDoc(usersCollection, newUser);
+            toast.success('Register success!')
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/email-already-in-use') {
+                toast.error('Email is already in use. Please choose a different email.');
+            } else {
+                toast.error('An error occurred. Please try again.');
+            }
+        }
     }
     const changeToggle = (e) => {
         e.preventDefault()

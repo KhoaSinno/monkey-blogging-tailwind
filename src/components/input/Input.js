@@ -1,6 +1,7 @@
 import { UserContext } from 'pages/SignUpPage';
 import React, { useContext } from 'react';
 import { useController } from 'react-hook-form';
+import PropTypes from 'prop-types';
 
 const Input = ({ id: name, control, isToggleShowHide, typeInput, ...props }) => {
     const { type } = useContext(UserContext);
@@ -18,5 +19,10 @@ const Input = ({ id: name, control, isToggleShowHide, typeInput, ...props }) => 
         />
     );
 };
-
+Input.propTypes = {
+    id: PropTypes.string.isRequired,
+    control: PropTypes.object.isRequired,
+    isToggleShowHide: PropTypes.bool,
+    typeInput: PropTypes.string,
+};
 export default Input;

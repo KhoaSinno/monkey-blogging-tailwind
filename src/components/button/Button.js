@@ -1,5 +1,6 @@
 import { LoadingSpinner } from 'components/loading';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Button = ({ children, isSubmitting, onClick = () => { }, ...props }) => {
     return (
@@ -9,5 +10,8 @@ const Button = ({ children, isSubmitting, onClick = () => { }, ...props }) => {
         </div>
     );
 };
-
+Button.propTypes = {
+    children: PropTypes.node.isRequired,
+    isSubmitting: PropTypes.bool,
+};
 export default Button;
