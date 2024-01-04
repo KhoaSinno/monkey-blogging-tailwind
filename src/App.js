@@ -1,10 +1,11 @@
 import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/auth-context";
-import SignInPage from "pages/SignInPage";
 
 // const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
 const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
+const SignInPage = React.lazy(() => import("pages/SignInPage"));
+const HomePage = React.lazy(() => import("pages/HomePage"));
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/sign-up" element={<SignUpPage></SignUpPage>}></Route>
             <Route path="/sign-in" element={<SignInPage></SignInPage>}></Route>
+            <Route path="/" element={<HomePage></HomePage>}></Route>
           </Routes>
         </Suspense>
       </AuthProvider>
