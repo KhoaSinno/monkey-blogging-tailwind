@@ -1,5 +1,5 @@
 import { IconEyeClose, IconEyeOpen } from 'components/icon';
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import styled from 'styled-components'
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -7,11 +7,12 @@ import * as yup from "yup";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Field } from 'components/field';
 import { Button } from 'components/button';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from 'firebase-app/firebase-config';
 import { addDoc, collection } from 'firebase/firestore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from 'contexts/auth-context';
 
 export const ContextSignIn = createContext()
 
@@ -38,23 +39,36 @@ const SignInPage = () => {
         resolver: yupResolver(schema),
     });
     const [toggle, setToggle] = useState(false);
+    const { userInfo } = useAuth()
+
+    // side effect
+    useEffect(() => {
+        if (!userInfo) navigate('sign-up')
+        else navigate('/')
+    }, []);
 
     // handle function
-    const handleSignIp = (values) => {
+    const handleSignIn = async (values) => {
         try {
-            console.log("🚀 ~ file: SignInPage.js:44 ~ handleSignIp ~ values:", values)
+            const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
 
-            // navigate('/')
-            toast.success('Register success!')
+            // handle success
+            console.log("🚀 ~ file: SignInPage.js:47 ~ handleSignIn ~ userCredential:", userCredential)
+            console.log("Logged in user:", userCredential.user);
+            toast.success('Sign in success!');
+
+            // navigate('/');
         } catch (error) {
             console.error(error);
-            if (error.code === 'abc') {
-                toast.error('abc');
+            if (error.code === 'auth/invalid-email' || error.code === 'auth/user-disabled' || error.code === 'auth/user-not-found') {
+                toast.error('Invalid email or password. Please try again.');
+            } else if (error.code === 'auth/wrong-password') {
+                toast.error('Wrong password. Please try again.');
             } else {
                 toast.error('An error occurred. Please try again.');
             }
         }
-    }
+    };
     const changeToggle = (e) => {
         e.preventDefault()
         setToggle(!toggle)
@@ -63,13 +77,14 @@ const SignInPage = () => {
     // preparing data
     const type = toggle ? 'text' : 'password'
     const data = { type }
+
     return (
         <ContextSignIn.Provider value={data}>
             <div className='p-10 min-h-dvh'>
                 <div className="container">
                     <img alt="monkey-blogging" srcSet="/logo.png 2x" className='m-[0_auto_30px]' />
                     <h1 className="heading text-center text-[#1DC071] font-bold text-3xl tracking-wide">Monkey Blogging</h1>
-                    <form className='p-[0_3rem]' onSubmit={handleSubmit(handleSignIp)}>
+                    <form className='p-[0_3rem]' onSubmit={handleSubmit(handleSignIn)}>
                         <Field
                             id='email'
                             control={control}
