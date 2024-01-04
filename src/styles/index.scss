@@ -13,6 +13,11 @@
     color: #232323;
   }
 }
+@layer components {
+  .gradientBtnPrimary {
+    background-image: linear-gradient(to right, #00a7b4, #a4d96c);
+  }
+}
 .container {
   width: 100%;
   max-width: 1260px;

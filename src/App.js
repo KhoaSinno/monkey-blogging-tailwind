@@ -6,6 +6,7 @@ import { AuthProvider } from "./contexts/auth-context";
 const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
 const SignInPage = React.lazy(() => import("pages/SignInPage"));
 const HomePage = React.lazy(() => import("pages/HomePage"));
+const NotFoundPage = React.lazy(() => import("pages/NotFoundPage"));
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/sign-up" element={<SignUpPage></SignUpPage>}></Route>
             <Route path="/sign-in" element={<SignInPage></SignInPage>}></Route>
             <Route path="/" element={<HomePage></HomePage>}></Route>
+            <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
           </Routes>
         </Suspense>
       </AuthProvider>

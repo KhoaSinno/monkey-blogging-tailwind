@@ -82,8 +82,10 @@ const SignInPage = () => {
         <ContextSignIn.Provider value={data}>
             <div className='p-10 min-h-dvh'>
                 <div className="container">
-                    <img alt="monkey-blogging" srcSet="/logo.png 2x" className='m-[0_auto_30px]' />
-                    <h1 className="heading text-center text-[#1DC071] font-bold text-3xl tracking-wide">Monkey Blogging</h1>
+                    <NavLink to='/'>
+                        <img alt="monkey-blogging" srcSet="/logo.png 2x" className='m-[0_auto_30px]' />
+                        <h1 className="heading text-center text-[#1DC071] font-bold text-3xl tracking-wide">Monkey Blogging</h1>
+                    </NavLink>
                     <form className='p-[0_3rem]' onSubmit={handleSubmit(handleSignIn)}>
                         <Field
                             id='email'
@@ -101,7 +103,14 @@ const SignInPage = () => {
                             isToggleShowHide
                             errors={errors}
                         >{toggle ? <IconEyeOpen onClick={changeToggle}></IconEyeOpen> : <IconEyeClose onClick={changeToggle}></IconEyeClose>}</Field>
-                        <Button type="submit" disabled={isSubmitting} isSubmitting={isSubmitting}>Login</Button>
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                            isSubmitting={isSubmitting}
+                            classContainer='max-w-[200px] m-[1rem_auto_.3rem] pt-6'
+                            classBtn='gradientBtnPrimary'
+
+                        >Login</Button>
                     </form>
                 </div>
             </div>
