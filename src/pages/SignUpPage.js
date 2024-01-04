@@ -12,6 +12,7 @@ import { auth, db } from 'firebase-app/firebase-config';
 import { addDoc, collection } from 'firebase/firestore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from 'contexts/auth-context';
 
 export const ContextSignUp = createContext()
 
@@ -28,7 +29,7 @@ const schema = yup.object({
 });
 
 const SignUpPage = () => {
-
+    const { setUserInfo } = useAuth()
     const navigate = useNavigate();
     const {
         control,
@@ -52,6 +53,8 @@ const SignUpPage = () => {
             }
             const usersCollection = collection(db, 'users');
             await addDoc(usersCollection, newUser);
+            console.log("🚀 ~ file: SignUpPage.js:67 ~ handleSignUp ~ newUser:", newUser)
+            await setUserInfo(newUser)
             navigate('/')
             toast.success('Register success!')
         } catch (error) {

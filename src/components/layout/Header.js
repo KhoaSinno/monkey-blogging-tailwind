@@ -48,10 +48,17 @@ const Header = () => {
                             </span>
                         </div>
                         <div>
-                            <Button
-                                classBtn='gradientBtnPrimary'
-                                to='/sign-up'
-                            >Sign Up</Button>
+                            {userInfo ?
+                                <Button
+                                    classBtn='gradientBtnPrimary px-5'
+                                    to='/profile'
+                                >Welcome! {userInfo?.displayName || ''}</Button>
+                                :
+                                <Button
+                                    classBtn='gradientBtnPrimary'
+                                    to='/sign-up'
+                                >Sign Up</Button>
+                            }
                         </div>
                     </div>
                 </div>
