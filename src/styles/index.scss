@@ -16,6 +16,23 @@
 .gradientBtnPrimary {
   background-image: linear-gradient(to right, #00a7b4, #a4d96c);
 }
+.heading-before {
+  font-size: 1.7rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 15px;
+  &::before {
+    display: block;
+    content: "";
+    height: 5px;
+    background-color: #85da2a;
+    width: 50px;
+    position: absolute;
+    top: -8px;
+    left: 0;
+    border-radius: 10px;
+  }
+}
 .container {
   width: 100%;
   max-width: 1260px;

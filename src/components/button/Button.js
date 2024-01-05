@@ -8,12 +8,12 @@ const Button = ({ children, isSubmitting, onClick = () => { }, classContainer = 
             <div className={`flex flex-col gap-2 ${classContainer}`}>
                 {to !== '' && typeof to === 'string' && to ?
                     <NavLink to={to} onClick={onClick}
-                        className={`${isSubmitting ? 'py-[4px]' : 'py-3'} px-12 text-white font-bold rounded-lg flex items-center justify-center cursor-pointer ${classBtn}`} {...props}
+                        className={`${isSubmitting ? 'py-[4px]' : 'py-3'} px-12  font-bold rounded-lg flex items-center justify-center cursor-pointer ${classBtn}`} {...props}
                     >{isSubmitting ? <LoadingSpinner></LoadingSpinner> : children}</NavLink>
                     :
-                    <button onClick={onClick}
-                        className={`${isSubmitting ? 'py-[4px]' : 'py-3'} px-12 text-white font-bold rounded-lg flex items-center justify-center cursor-pointer ${classBtn}`} {...props}
-                    >{isSubmitting ? <LoadingSpinner></LoadingSpinner> : children}</button>
+                    <NavLink onClick={onClick}
+                        className={`${isSubmitting ? 'py-[4px]' : 'py-3'} px-12  font-bold rounded-lg flex items-center justify-center cursor-pointer ${classBtn}`} {...props}
+                    >{isSubmitting ? <LoadingSpinner></LoadingSpinner> : children}</NavLink>
 
                 }
             </div>

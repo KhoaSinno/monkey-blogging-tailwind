@@ -108,7 +108,7 @@ const SignInPage = () => {
                             disabled={isSubmitting}
                             isSubmitting={isSubmitting}
                             classContainer='max-w-[200px] m-[1rem_auto_.3rem] pt-6'
-                            classBtn='gradientBtnPrimary'
+                            classBtn='gradientBtnPrimary text-white'
 
                         >Login</Button>
                     </form>

@@ -22,7 +22,7 @@ const Header = () => {
     const { userInfo } = useAuth()
     console.log("🚀 ~ file: Header.js:23 ~ Header ~ userInfo:", userInfo)
     return (
-        <div className='pt-20'>
+        <div className='pt-5'>
             <div className="container">
                 <div className="header-main grid grid-cols-2">
                     <div className="header-left flex justify-start items-center gap-x-9">
@@ -50,12 +50,12 @@ const Header = () => {
                         <div>
                             {userInfo ?
                                 <Button
-                                    classBtn='gradientBtnPrimary px-5'
+                                    classBtn='gradientBtnPrimary px-5 text-white'
                                     to='/profile'
                                 >Welcome! {userInfo?.displayName || ''}</Button>
                                 :
                                 <Button
-                                    classBtn='gradientBtnPrimary'
+                                    classBtn='gradientBtnPrimary text-white'
                                     to='/sign-up'
                                 >Sign Up</Button>
                             }
