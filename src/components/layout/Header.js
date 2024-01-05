@@ -32,7 +32,7 @@ const Header = () => {
                         {menuLink.map(({ url, title }) =>
                             <ul key={title} className='font-semibold text-lg'>
                                 <li>
-                                    <a href={url}>{title}</a>
+                                    <NavLink to={url}>{title}</NavLink>
                                 </li>
                             </ul>)}
                     </div>

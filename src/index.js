@@ -8,7 +8,6 @@ import { ToastContainer } from "react-toastify";
 import { GlobalStyles } from "./styles/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./utils/constants";
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ThemeProvider theme={theme}>
