@@ -8,8 +8,7 @@ import PostImage from './PostImage';
 
 const PostFeatureItem = () => {
     return (
-        <div className="cart-item w-auto h-[17rem]  text-white relative rounded-xl">
-            <Overlay></Overlay>
+        <div className="cart-item w-auto h-[17rem] relative text-white  rounded-xl">
             <NavLink to='/xyz'>
                 <PostImage></PostImage>
                 <div className="content absolute inset-0 p-5 rounded-xl">

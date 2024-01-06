@@ -8,8 +8,7 @@ import PostImage from './PostImage';
 
 const PostNewestItem = ({ classContainer = '', heightImg = 'h-full' }) => {
     return (
-        <div className={`cart-item w-auto relative text-white  rounded-xl ${classContainer}`}>
-            <Overlay height='h-[200px]'></Overlay>
+        <div className={`cart-item w-auto text-white rounded-xl ${classContainer}`}>
             <NavLink to='/' className=''>
                 <PostImage classContainer={heightImg}></PostImage>
                 <div className="content text-[#232323] py-3 rounded-xl">
