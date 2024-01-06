@@ -38,55 +38,55 @@ const HomeNewest = () => {
               </div>
             </NavLink>
           </div>
-          <div className="grid grid-rows-3 gap-y-5 ">
-            <div className="cart-item-row">
+          <div className="grid grid-rows-3 gap-y-7 bg-[#F3EDFF] px-6 py-5 rounded-xl">
+            <div className="cart-item-row h-[180px] overflow-y-auto ">
               <NavLink className='flex gap-x-3'>
-                <div className=" h-[154px] w-[460px]">
+                <div className="w-1/3 max-h-[125px] mt-[8%]">
                   <img srcSet="/laptop-img.jpg 2x" alt="" className="w-full object-cover h-full rounded-xl " />
                 </div>
-                <div>
-                  <Link className="py-1 px-2 rounded-xl bg-[#F3EDFF] text-[#6B6B6B]">Knowledge</Link>
-                  <p className="text-xl font-medium tracking-wide leading-7 pt-5">This revision improves the sentence structure and conveys the idea more effectively.</p>
-                  <div className="text-[#6B6B6B] flex justify-between items-center gap-2">
+                <div className="w-2/3">
+                  <Link className="py-1 px-2 rounded-xl bg-[#FFF] text-[#6B6B6B]">Knowledge</Link>
+                  <p className="text-xl font-medium tracking-wide leading-7 py-3">This revision improves the sentence structure and conveys the idea more effectively. This revision improves the sentence structure and conveys the idea more effectively.</p>
+                  <div className="text-[#6B6B6B] flex justify-start items-center gap-2">
                     <span>Mar 23</span>
                     <span><svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
-                      <circle cx="3" cy="3" r="3" fill="#F8F9FA" />
+                      <circle cx="3" cy="3" r="3" fill="#B1B5C3" />
                     </svg></span>
                     <span>Andiez Le</span>
                   </div>
                 </div>
               </NavLink>
             </div>
-            <div className="cart-item-row">
-              <NavLink className='flex gap-x-5'>
-                <div className=" h-[154px] w-[470px]">
+            <div className="cart-item-row h-[180px] overflow-y-auto">
+              <NavLink className='flex gap-x-3'>
+                <div className="w-1/3 max-h-[125px] mt-[8%]">
                   <img srcSet="/laptop-img.jpg 2x" alt="" className="w-full object-cover h-full rounded-xl " />
                 </div>
-                <div>
-                  <Link className="py-1 px-2 rounded-xl bg-[#F3EDFF] text-[#6B6B6B]">Knowledge</Link>
-                  <p className="text-xl font-medium tracking-wide leading-7 pt-5">This revision improves the sentence structure and conveys the idea more effectively.</p>
-                  <div className="text-[#6B6B6B] flex justify-between items-center gap-2">
+                <div className="w-2/3">
+                  <Link className="py-1 px-2 rounded-xl bg-[#FFF] text-[#6B6B6B]">Knowledge</Link>
+                  <p className="text-xl font-medium tracking-wide leading-7 py-3">This revision improves the sentence structure and conveys the idea more effectively. This revision improves the sentence structure and conveys the idea more effectively.</p>
+                  <div className="text-[#6B6B6B] flex justify-start items-center gap-2">
                     <span>Mar 23</span>
                     <span><svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
-                      <circle cx="3" cy="3" r="3" fill="#F8F9FA" />
+                      <circle cx="3" cy="3" r="3" fill="#B1B5C3" />
                     </svg></span>
                     <span>Andiez Le</span>
                   </div>
                 </div>
               </NavLink>
             </div>
-            <div className="cart-item-row">
-              <NavLink className='flex gap-x-5'>
-                <div className=" h-[154px] w-[470px]">
+            <div className="cart-item-row h-[180px] overflow-y-auto">
+              <NavLink className='flex gap-x-3'>
+                <div className="w-1/3 max-h-[125px] mt-[8%]">
                   <img srcSet="/laptop-img.jpg 2x" alt="" className="w-full object-cover h-full rounded-xl " />
                 </div>
-                <div>
-                  <Link className="py-1 px-2 rounded-xl bg-[#F3EDFF] text-[#6B6B6B]">Knowledge</Link>
-                  <p className="text-xl font-medium tracking-wide leading-7 pt-5">This revision improves the sentence structure and conveys the idea more effectively.</p>
-                  <div className="text-[#6B6B6B] flex justify-between items-center gap-2">
+                <div className="w-2/3">
+                  <Link className="py-1 px-2 rounded-xl bg-[#FFF] text-[#6B6B6B]">Knowledge</Link>
+                  <p className="text-xl font-medium tracking-wide leading-7 py-3">This revision improves the sentence structure and conveys the idea more effectively. This revision improves the sentence structure and conveys the idea more effectively.</p>
+                  <div className="text-[#6B6B6B] flex justify-start items-center gap-2">
                     <span>Mar 23</span>
                     <span><svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
-                      <circle cx="3" cy="3" r="3" fill="#F8F9FA" />
+                      <circle cx="3" cy="3" r="3" fill="#B1B5C3" />
                     </svg></span>
                     <span>Andiez Le</span>
                   </div>
@@ -108,7 +108,7 @@ const HomeNewest = () => {
                 <div className="flex ">
                   <Link className="py-1 px-2 rounded-xl bg-[#F3EDFF] text-[#6B6B6B]">Knowledge</Link>
                 </div>
-                <p className="text-md font-medium tracking-wide leading-6 pt-3">This revision improves the sentence structure and conveys the idea more effectively.</p>
+                <p className="text-md font-medium tracking-wide leading-6 pt-3">This revision improves the sentence structure and conveys the idea more effectively. </p>
                 <div className="text-[#232323] flex justify-start items-center gap-3 pt-3">
                   <span>Mar 23</span>
                   <span><svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
