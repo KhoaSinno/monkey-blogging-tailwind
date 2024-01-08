@@ -7,13 +7,14 @@ import PropTypes from 'prop-types';
  * @param {id, content, children, placeholder, control, isToggleShowHide, typeInput, errors} 
  * 
  */
-const Field = ({ id, content, children, placeholder, control, isToggleShowHide, typeInput, errors }) => {
+const Field = ({ id, content, children, placeholder, control, isToggleShowHide, typeInput, errors, classContainer, required, full, }) => {
     return (
-        <div className="flex flex-col gap-2 max-w-[500px] m-[1.5rem_auto_.3rem]  ">
+        <div className={`flex flex-col gap-2 ${full ? 'w-full' : 'max-w-[500px]'} ${classContainer}`}>
             <Label htmlFor={id}>{content}</Label>
             <div className='flex justify-center items-center bg-[#F1F1F3] p-2 rounded-lg transition-all shadow-md focus-within:bg-white' >
                 <Input id={id} placeholder={placeholder}
                     control={control} isToggleShowHide={isToggleShowHide} typeInput={typeInput}
+                    required={required === true}
                 />
                 {children ? children : null}
             </div>

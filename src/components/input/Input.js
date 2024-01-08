@@ -11,9 +11,9 @@ const Input = ({ id: name, control, isToggleShowHide, typeInput, ...props }) => 
 
     let type = 'text'
     if (signUpData) {
-        type = signUpData.type
+        type = signUpData?.type
     } else {
-        type = signInData.type
+        type = signInData?.type
     }
     const {
         field,

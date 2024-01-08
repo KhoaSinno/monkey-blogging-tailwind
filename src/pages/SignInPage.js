@@ -1,6 +1,5 @@
 import { IconEyeClose, IconEyeOpen } from 'components/icon';
 import React, { createContext, useEffect, useState } from 'react';
-import styled from 'styled-components'
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
@@ -94,6 +93,7 @@ const SignInPage = () => {
                             content='Email address:'
                             typeInput='text'
                             errors={errors}
+                            classContainer='m-[1.5rem_auto_.3rem]'
                         ></Field>
                         <Field
                             id='password'
@@ -102,6 +102,7 @@ const SignInPage = () => {
                             content='Password:'
                             isToggleShowHide
                             errors={errors}
+                            classContainer='m-[1.5rem_auto_.3rem]'
                         >{toggle ? <IconEyeOpen onClick={changeToggle}></IconEyeOpen> : <IconEyeClose onClick={changeToggle}></IconEyeClose>}</Field>
                         <Button
                             type="submit"
