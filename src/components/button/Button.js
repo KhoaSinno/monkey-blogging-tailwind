@@ -11,9 +11,9 @@ const Button = ({ children, isSubmitting, onClick = () => { }, classContainer = 
                         className={`${isSubmitting ? 'py-[4px]' : 'py-3'} px-12  font-bold rounded-lg flex items-center justify-center cursor-pointer ${classBtn}`} {...props}
                     >{isSubmitting ? <LoadingSpinner></LoadingSpinner> : children}</NavLink>
                     :
-                    <NavLink onClick={onClick}
+                    <button onClick={onClick}
                         className={`${isSubmitting ? 'py-[4px]' : 'py-3'} px-12  font-bold rounded-lg flex items-center justify-center cursor-pointer ${classBtn}`} {...props}
-                    >{isSubmitting ? <LoadingSpinner></LoadingSpinner> : children}</NavLink>
+                    >{isSubmitting ? <LoadingSpinner></LoadingSpinner> : children}</button>
 
                 }
             </div>

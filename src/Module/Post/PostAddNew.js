@@ -24,6 +24,7 @@ import {
   where,
 } from "firebase/firestore";
 import DashboardHeading from "Module/dashboard/DashboardHeading";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const PostAddNew = () => {
   const { userInfo } = useAuth();
@@ -39,98 +40,72 @@ const PostAddNew = () => {
       user: {},
     },
   });
-  const watchStatus = watch("status");
+  const watchStatus = watch("status"); // custom input radio so i use watch to control
   const watchHot = watch("hot");
-  const {
-    image,
-    handleResetUpload,
-    progress,
-    handleSelectImage,
-    handleDeleteImage,
-  } = useFirebaseImage(setValue, getValues);
+  // const {
+  //   image,
+  //   handleResetUpload,
+  //   progress,
+  //   handleSelectImage,
+  //   handleDeleteImage,
+  // } = useFirebaseImage(setValue, getValues);
+
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState("");
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    async function fetchUserData() {
-      if (!userInfo.email) return;
-      const q = query(
-        collection(db, "users"),
-        where("email", "==", userInfo.email)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        setValue("user", {
-          id: doc.id,
-          ...doc.data(),
+
+  // handle function
+  const addPostHandler = (values) => {
+    const _values = { ...values }
+    _values.slug = slugify(values.slug || values.title)
+    _values.status = +values.status
+    console.log("🚀 ~ file: PostAddNew.js:57 ~ addPostHandler ~ e:", _values)
+    // handleUploadImage(_values.image)
+  }
+  const handleClickOption = (item) => {
+    console.log("🚀 ~ file: PostAddNew.js:61 ~ handleClickOption ~ item:", item)
+  }
+  // handle image
+  const handleUploadImage = (file) => {
+    const storage = getStorage();
+
+    // Upload file and metadata to the object 'images/mountains.jpg'
+    const storageRef = ref(storage, 'images/' + file.name);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+          default:
+            console.log('Nothing')
+        }
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        // Upload completed successfully, now we can get the download URL
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
         });
-      });
-    }
-    fetchUserData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userInfo.email]);
-  const addPostHandler = async (values) => {
-    setLoading(true);
-    try {
-      const cloneValues = { ...values };
-      cloneValues.slug = slugify(values.slug || values.title, { lower: true });
-      cloneValues.status = Number(values.status);
-      const colRef = collection(db, "posts");
-      await addDoc(colRef, {
-        ...cloneValues,
-        image,
-        createdAt: serverTimestamp(),
-      });
-      toast.success("Create new post successfully!");
-      reset({
-        title: "",
-        slug: "",
-        status: 2,
-        category: {},
-        hot: false,
-        image: "",
-        user: {},
-      });
-      handleResetUpload();
-      setSelectCategory({});
-    } catch (error) {
-      setLoading(false);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    async function getData() {
-      const colRef = collection(db, "categories");
-      const q = query(colRef, where("status", "==", 1));
-      const querySnapshot = await getDocs(q);
-      let result = [];
-      querySnapshot.forEach((doc) => {
-        result.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-      setCategories(result);
-    }
-    getData();
-  }, []);
-
-  useEffect(() => {
-    document.title = "Monkey Blogging - Add new post";
-  }, []);
-
-  const handleClickOption = async (item) => {
-    const colRef = doc(db, "categories", item.id);
-    const docData = await getDoc(colRef);
-    setValue("category", {
-      id: docData.id,
-      ...docData.data(),
-    });
-    setSelectCategory(item);
-  };
-
+      }
+    );
+  }
+  const handleSelectImage = (e) => {
+    console.log("🚀 ~ e: PostAddNew.js:61 ~ handleImage ~ e:", e.target.files)
+    const file = e.target.files[0]
+    setValue('image', file)
+  }
   return (
     <>
       <DashboardHeading title="Add post" desc="Add new post"></DashboardHeading>
@@ -160,13 +135,14 @@ const PostAddNew = () => {
         ></Field>
         <div className="flex flex-col gap-y-3">
           <Label>Image</Label>
-          <ImageUpload
+          <input type="file" name="image" onChange={handleSelectImage} />
+          {/* <ImageUpload
             onChange={handleSelectImage}
             handleDeleteImage={handleDeleteImage}
             className="h-[250px]"
             progress={progress}
             image={image}
-          ></ImageUpload>
+          ></ImageUpload> */}
         </div>
         <div className="flex flex-col gap-y-3">
           <Label>Category</Label>
@@ -228,7 +204,6 @@ const PostAddNew = () => {
         </div>
         <Button
           type="submit"
-          // className="mx-auto w-[250px]"
           classBtn="gradientBtnPrimary text-white"
           isSubmitting={loading}
           disabled={loading}
@@ -242,3 +217,86 @@ const PostAddNew = () => {
 };
 
 export default PostAddNew;
+
+
+/**
+useEffect(() => {
+  async function fetchUserData() {
+    if (!userInfo.email) return;
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", userInfo.email)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setValue("user", {
+        id: doc.id,
+        ...doc.data(),
+      });
+    });
+  }
+  fetchUserData();
+}, [userInfo.email]);
+ 
+const addPostHandler = async (values) => {
+  setLoading(true);
+  try {
+    const cloneValues = { ...values };
+    cloneValues.slug = slugify(values.slug || values.title, { lower: true });
+    cloneValues.status = Number(values.status);
+    const colRef = collection(db, "posts");
+    await addDoc(colRef, {
+      ...cloneValues,
+      image,
+      createdAt: serverTimestamp(),
+    });
+    toast.success("Create new post successfully!");
+    reset({
+      title: "",
+      slug: "",
+      status: 2,
+      category: {},
+      hot: false,
+      image: "",
+      user: {},
+    });
+    handleResetUpload();
+    setSelectCategory({});
+  } catch (error) {
+    setLoading(false);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  async function getData() {
+    const colRef = collection(db, "categories");
+    const q = query(colRef, where("status", "==", 1));
+    const querySnapshot = await getDocs(q);
+    let result = [];
+    querySnapshot.forEach((doc) => {
+      result.push({
+        id: doc.id,
+        ...doc.data(),
+      });
+    });
+    setCategories(result);
+  }
+  getData();
+}, []);
+
+useEffect(() => {
+  document.title = "Monkey Blogging - Add new post";
+}, []);
+
+const handleClickOption = async (item) => {
+  const colRef = doc(db, "categories", item.id);
+  const docData = await getDoc(colRef);
+  setValue("category", {
+    id: docData.id,
+    ...docData.data(),
+  });
+  setSelectCategory(item);
+};
+*/
