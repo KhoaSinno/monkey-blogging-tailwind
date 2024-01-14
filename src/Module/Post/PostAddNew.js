@@ -19,12 +19,14 @@ import {
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
   serverTimestamp,
   where,
 } from "firebase/firestore";
 import DashboardHeading from "Module/dashboard/DashboardHeading";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+import useImageFirebase from "hooks/useImageFirebase";
 
 const PostAddNew = () => {
   const { userInfo } = useAuth();
@@ -42,19 +44,29 @@ const PostAddNew = () => {
   });
   const watchStatus = watch("status"); // custom input radio so i use watch to control
   const watchHot = watch("hot");
-  // const {
-  //   image,
-  //   handleResetUpload,
-  //   progress,
-  //   handleSelectImage,
-  //   handleDeleteImage,
-  // } = useFirebaseImage(setValue, getValues);
-  const [progress, setProgress] = useState(0);
-  const [image, setImage] = useState('');
+  const { progress, image, handleSelectImage, handleDeleteImage } = useImageFirebase(setValue, getValues)
 
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // side effect 
+  useEffect(() => {
+    const getPost = async () => {
+      const categoriesCol = collection(db, 'categories');
+      const q = query(categoriesCol, where('status', '==', 1))
+
+      const querySnapshot = await getDocs(q);
+      const categories = []
+      querySnapshot.forEach((doc) => {
+        categories.push({ id: doc.id, ...doc.data() })
+      });
+      setCategories(categories);
+    }
+    getPost()
+      .catch(console.error);
+  }, []);
+  console.log("🚀 ~ PostAddNew ~ categories:", categories)
 
   // handle function
   const addPostHandler = (values) => {
@@ -68,64 +80,6 @@ const PostAddNew = () => {
     console.log("🚀 ~ file: PostAddNew.js:61 ~ handleClickOption ~ item:", item)
   }
 
-  // handle image
-  const handleUploadImage = (file) => {
-    const storage = getStorage();
-
-    // Upload file and metadata to the object 'images/mountains.jpg'
-    const storageRef = ref(storage, 'images/' + file.name);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    // Listen for state changes, errors, and completion of the upload.
-    uploadTask.on('state_changed',
-      (snapshot) => {
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setProgress(progress)
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
-            break;
-          case 'running':
-            console.log('Upload is running');
-            break;
-          default:
-            console.log('Nothing')
-        }
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        // Upload completed successfully, now we can get the download URL
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-          setImage(downloadURL)
-        });
-      }
-    );
-  }
-  const handleSelectImage = (e) => {
-    const file = e.target.files[0]
-    setValue('image_name', file.name)
-    handleUploadImage(file)
-  }
-  const handleDeleteImage = () => {
-    const storage = getStorage();
-
-    // Create a reference to the file to delete
-    const desertRef = ref(storage, `images/${getValues('image_name')}`);
-
-    deleteObject(desertRef).then(() => {
-      // File deleted successfully
-      console.log('File deleted successfully')
-      setImage('')
-      setProgress(0)
-    }).catch((error) => {
-      console.log("🚀 ~ deleteObject ~ error:", error)
-    });
-  }
   return (
     <>
       <DashboardHeading title="Add post" desc="Add new post"></DashboardHeading>
@@ -151,7 +105,6 @@ const PostAddNew = () => {
           required
           full
           classContainer='m-0'
-
         ></Field>
         <div className="flex flex-col gap-y-3">
           <Label>Image</Label>
@@ -163,7 +116,7 @@ const PostAddNew = () => {
             image={image}
           ></ImageUpload>
         </div>
-        <div className="flex flex-col gap-y-3">
+        <div className="flex flex-col gap-y-3 pb-7">
           <Label>Category</Label>
           <Dropdown>
             <Dropdown.Select placeholder="Select the category"></Dropdown.Select>
