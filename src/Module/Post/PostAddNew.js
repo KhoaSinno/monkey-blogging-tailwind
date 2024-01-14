@@ -24,7 +24,7 @@ import {
   where,
 } from "firebase/firestore";
 import DashboardHeading from "Module/dashboard/DashboardHeading";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 
 const PostAddNew = () => {
   const { userInfo } = useAuth();
@@ -49,6 +49,8 @@ const PostAddNew = () => {
   //   handleSelectImage,
   //   handleDeleteImage,
   // } = useFirebaseImage(setValue, getValues);
+  const [progress, setProgress] = useState(0);
+  const [image, setImage] = useState('');
 
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState("");
@@ -65,6 +67,7 @@ const PostAddNew = () => {
   const handleClickOption = (item) => {
     console.log("🚀 ~ file: PostAddNew.js:61 ~ handleClickOption ~ item:", item)
   }
+
   // handle image
   const handleUploadImage = (file) => {
     const storage = getStorage();
@@ -78,6 +81,7 @@ const PostAddNew = () => {
       (snapshot) => {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(progress)
         console.log('Upload is ' + progress + '% done');
         switch (snapshot.state) {
           case 'paused':
@@ -97,14 +101,30 @@ const PostAddNew = () => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log('File available at', downloadURL);
+          setImage(downloadURL)
         });
       }
     );
   }
   const handleSelectImage = (e) => {
-    console.log("🚀 ~ e: PostAddNew.js:61 ~ handleImage ~ e:", e.target.files)
     const file = e.target.files[0]
-    setValue('image', file)
+    setValue('image_name', file.name)
+    handleUploadImage(file)
+  }
+  const handleDeleteImage = () => {
+    const storage = getStorage();
+
+    // Create a reference to the file to delete
+    const desertRef = ref(storage, `images/${getValues('image_name')}`);
+
+    deleteObject(desertRef).then(() => {
+      // File deleted successfully
+      console.log('File deleted successfully')
+      setImage('')
+      setProgress(0)
+    }).catch((error) => {
+      console.log("🚀 ~ deleteObject ~ error:", error)
+    });
   }
   return (
     <>
@@ -135,14 +155,13 @@ const PostAddNew = () => {
         ></Field>
         <div className="flex flex-col gap-y-3">
           <Label>Image</Label>
-          <input type="file" name="image" onChange={handleSelectImage} />
-          {/* <ImageUpload
+          <ImageUpload
             onChange={handleSelectImage}
             handleDeleteImage={handleDeleteImage}
             className="h-[250px]"
             progress={progress}
             image={image}
-          ></ImageUpload> */}
+          ></ImageUpload>
         </div>
         <div className="flex flex-col gap-y-3">
           <Label>Category</Label>
