@@ -66,18 +66,21 @@ const PostAddNew = () => {
     getPost()
       .catch(console.error);
   }, []);
-  console.log("🚀 ~ PostAddNew ~ categories:", categories)
 
   // handle function
-  const addPostHandler = (values) => {
+  const addPostHandler = async (values) => {
     const _values = { ...values }
     _values.slug = slugify(values.slug || values.title)
     _values.status = +values.status
+    _values.image = image
+
+    await addDoc(collection(db, "posts"), _values);
     console.log("🚀 ~ file: PostAddNew.js:57 ~ addPostHandler ~ e:", _values)
     // handleUploadImage(_values.image)
   }
   const handleClickOption = (item) => {
-    console.log("🚀 ~ file: PostAddNew.js:61 ~ handleClickOption ~ item:", item)
+    setValue('category', item.id)
+    setValue('user', userInfo.uid)
   }
 
   return (

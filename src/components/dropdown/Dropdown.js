@@ -4,7 +4,7 @@ import { DropdownProvider } from "./dropdown-context";
 const Dropdown = ({ children, ...props }) => {
   return (
     <DropdownProvider {...props}>
-      <div className="relative inline-block w-full">{children}</div>
+      <div className="relative inline-block w-full select-none">{children}</div>
     </DropdownProvider>
   );
 };
