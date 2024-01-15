@@ -27,29 +27,33 @@ import {
 import DashboardHeading from "Module/dashboard/DashboardHeading";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import useImageFirebase from "hooks/useImageFirebase";
+import { useDropdown } from "components/dropdown/dropdown-context";
+import CategorySelected from "Module/category/CategorySelected";
 
+const defaultValues = {
+  title: "",
+  slug: "",
+  status: 2,
+  hot: false,
+  image: "",
+  category: {},
+  user: {},
+}
 const PostAddNew = () => {
   const { userInfo } = useAuth();
   const { control, watch, setValue, handleSubmit, getValues, reset } = useForm({
     mode: "onChange",
-    defaultValues: {
-      title: "",
-      slug: "",
-      status: 2,
-      hot: false,
-      image: "",
-      category: {},
-      user: {},
-    },
+    defaultValues: defaultValues,
   });
   const watchStatus = watch("status"); // custom input radio so i use watch to control
   const watchHot = watch("hot");
-  const { progress, image, handleSelectImage, handleDeleteImage } = useImageFirebase(setValue, getValues)
+  const { progress, image, handleResetUpload, handleSelectImage, handleDeleteImage } = useImageFirebase(setValue, getValues)
 
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [category, setCategory] = useState({});
   // side effect 
   useEffect(() => {
     const getPost = async () => {
@@ -73,14 +77,18 @@ const PostAddNew = () => {
     _values.slug = slugify(values.slug || values.title)
     _values.status = +values.status
     _values.image = image
+    _values.user = userInfo.uid
 
     await addDoc(collection(db, "posts"), _values);
     console.log("🚀 ~ file: PostAddNew.js:57 ~ addPostHandler ~ e:", _values)
-    // handleUploadImage(_values.image)
+    reset(defaultValues)
+    setCategory({})
+    handleResetUpload()
   }
   const handleClickOption = (item) => {
     setValue('category', item.id)
-    setValue('user', userInfo.uid)
+    setCategory(item)
+    // setValue('user', userInfo.uid)
   }
 
   return (
@@ -119,10 +127,10 @@ const PostAddNew = () => {
             image={image}
           ></ImageUpload>
         </div>
-        <div className="flex flex-col gap-y-3 pb-7">
+        <div className="flex flex-col gap-y-3 pb-7 pb-md-0">
           <Label>Category</Label>
           <Dropdown>
-            <Dropdown.Select placeholder="Select the category"></Dropdown.Select>
+            <Dropdown.Select placeholder={category?.name ? category.name : "Select the category"}></Dropdown.Select>
             <Dropdown.List>
               {categories.length > 0 &&
                 categories.map((item) => (
@@ -134,6 +142,8 @@ const PostAddNew = () => {
                   </Dropdown.Option>
                 ))}
             </Dropdown.List>
+            <CategorySelected category={category}></CategorySelected>
+
           </Dropdown>
           {selectCategory?.name && (
             <span className="inline-block p-3 text-sm font-medium text-green-600 rounded-lg bg-green-50">

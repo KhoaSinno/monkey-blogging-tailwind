@@ -3,6 +3,7 @@ import Heading from "components/layout/Heading";
 import { db } from "firebase-app/firebase-config";
 import {
   collection,
+  getDocs,
   limit,
   onSnapshot,
   query,
@@ -14,14 +15,28 @@ import { withErrorBoundary } from "react-error-boundary";
 import { Link, NavLink } from "react-router-dom";
 
 const HomeFeature = () => {
+  const [postFeature, setPostFeature] = useState({});
+
+  useEffect(() => {
+    const fetchPostFeature = async () => {
+      const q = query(collection(db, "posts"), where("hot", "==", true), where('status', '==', 1), limit(3));
+      const querySnapshot = await getDocs(q);
+      const result = []
+      querySnapshot.forEach((doc) => {
+        result.push({ id: doc.id, ...doc.data() })
+      });
+      setPostFeature(result)
+    }
+    fetchPostFeature()
+  }, []);
+  console.log('PostFeature: ', postFeature)
   return (
     <div className="homeFeature-container mb-10">
       <div className="container">
         <Heading>Newest</Heading>
         <div className="grid grid-cols-3 gap-10 justify-center">
-          <PostFeatureItem></PostFeatureItem>
-          <PostFeatureItem></PostFeatureItem>
-          <PostFeatureItem></PostFeatureItem>
+          {postFeature.length > 0 && postFeature.map((post) =>
+            <PostFeatureItem data={post} key={post.id}></PostFeatureItem>)}
         </div>
       </div>
     </div>
