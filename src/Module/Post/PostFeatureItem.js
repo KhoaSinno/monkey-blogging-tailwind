@@ -35,15 +35,15 @@ const PostFeatureItem = ({ data }) => {
             }
         };
         fetchUser()
-    }, []);
-    console.log('users', users)
+    }, [user]);
+    console.log('postFeature users', users)
     return (
         <div className="cart-item w-auto h-[17rem] relative text-white  rounded-xl">
             <NavLink to={slug}>
                 <PostImage srcSet={image} classContainer='h-[17rem]'></PostImage>
                 <div className="content absolute inset-0 p-5 rounded-xl">
                     <div className="flex justify-between">
-                        <PostCategory to='/'>{category.name}</PostCategory>
+                        <PostCategory to={category.slug}>{category.name}</PostCategory>
                         <PostMeta data={users}></PostMeta>
                     </div>
                     <PostTitle className='text-xl font-medium pt-5'>{title} </PostTitle>

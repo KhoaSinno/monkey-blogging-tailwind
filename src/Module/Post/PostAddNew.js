@@ -90,25 +90,35 @@ const PostAddNew = () => {
     getPost()
       .catch(console.error);
   }, []);
-
+  useEffect(() => {
+    document.title = 'Monkey Blogging - Add new Post'
+  }, []);
   // handle function
   const addPostHandler = async (values) => {
-    const _values = { ...values }
-    _values.slug = slugify(values.slug || values.title)
-    _values.status = +values.status
-    _values.image = image
-    _values.user = userInfo.uid
+    try {
+      setLoading(true)
+      const _values = { ...values }
+      _values.slug = slugify(values.slug || values.title)
+      _values.status = +values.status
+      _values.image = image
+      _values.user = userInfo.uid
 
-    console.log("🚀 ~ file: PostAddNew.js:57 ~ addPostHandler ~ e:", _values)
-    await addDoc(collection(db, "posts"), { ..._values, image, createdAt: serverTimestamp() });
-    // reset(defaultValues)
-    // setCategory({})
-    // handleResetUpload()
+      console.log("🚀 ~ file: PostAddNew.js:57 ~ values:", _values)
+      await addDoc(collection(db, "posts"), { ..._values, image, createdAt: serverTimestamp() });
+      reset(defaultValues)
+      setCategory({})
+      handleResetUpload()
+    } catch (error) {
+      console.log("🚀 ~ addPostHandler ~ error:", error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+
   }
   const handleClickOption = (item) => {
     setValue('category', item.id)
     setCategory(item)
-    // setValue('user', userInfo.uid)
   }
 
   return (
@@ -209,7 +219,7 @@ const PostAddNew = () => {
         </div>
         <Button
           type="submit"
-          classBtn="gradientBtnPrimary text-white"
+          classBtn="gradientBtnPrimary text-white w-[230px]"
           isSubmitting={loading}
           disabled={loading}
           classContainer='md:col-span-2 items-center'
@@ -223,85 +233,3 @@ const PostAddNew = () => {
 
 export default PostAddNew;
 
-
-/**
-useEffect(() => {
-  async function fetchUserData() {
-    if (!userInfo.email) return;
-    const q = query(
-      collection(db, "users"),
-      where("email", "==", userInfo.email)
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      setValue("user", {
-        id: doc.id,
-        ...doc.data(),
-      });
-    });
-  }
-  fetchUserData();
-}, [userInfo.email]);
- 
-const addPostHandler = async (values) => {
-  setLoading(true);
-  try {
-    const cloneValues = { ...values };
-    cloneValues.slug = slugify(values.slug || values.title, { lower: true });
-    cloneValues.status = Number(values.status);
-    const colRef = collection(db, "posts");
-    await addDoc(colRef, {
-      ...cloneValues,
-      image,
-      createdAt: serverTimestamp(),
-    });
-    toast.success("Create new post successfully!");
-    reset({
-      title: "",
-      slug: "",
-      status: 2,
-      category: {},
-      hot: false,
-      image: "",
-      user: {},
-    });
-    handleResetUpload();
-    setSelectCategory({});
-  } catch (error) {
-    setLoading(false);
-  } finally {
-    setLoading(false);
-  }
-};
-
-useEffect(() => {
-  async function getData() {
-    const colRef = collection(db, "categories");
-    const q = query(colRef, where("status", "==", 1));
-    const querySnapshot = await getDocs(q);
-    let result = [];
-    querySnapshot.forEach((doc) => {
-      result.push({
-        id: doc.id,
-        ...doc.data(),
-      });
-    });
-    setCategories(result);
-  }
-  getData();
-}, []);
-
-useEffect(() => {
-  document.title = "Monkey Blogging - Add new post";
-}, []);
-
-const handleClickOption = async (item) => {
-  const colRef = doc(db, "categories", item.id);
-  const docData = await getDoc(colRef);
-  setValue("category", {
-    id: docData.id,
-    ...docData.data(),
-  });
-  setSelectCategory(item);
-};
-*/

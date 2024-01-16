@@ -17,25 +17,12 @@ import { Link, NavLink } from "react-router-dom";
 const HomeFeature = () => {
   const [postFeature, setPostFeature] = useState({});
 
-  // useEffect(() => {
-  //   const fetchPostFeature = async () => {
-  //     const q = query(collection(db, "posts"), where("hot", "==", true), where('status', '==', 1), limit(3));
-  //     const querySnapshot = await getDocs(q);
-  //     const result = []
-  //     querySnapshot.forEach((doc) => {
-  //       result.push({ id: doc.id, ...doc.data() })
-  //     });
-  //     setPostFeature(result)
-  //   }
-  //   fetchPostFeature()
-  // }, []);
-
   useEffect(() => {
     const colRef = collection(db, "posts");
     const queries = query(
       colRef,
       where("status", "==", 1),
-      where("hot", "==", true),
+      where("hot", "==", false),
       limit(3)
     );
     onSnapshot(queries, (snapshot) => {
@@ -54,7 +41,7 @@ const HomeFeature = () => {
   return (
     <div className="homeFeature-container mb-10">
       <div className="container">
-        <Heading>Newest</Heading>
+        <Heading>Feature</Heading>
         <div className="grid grid-cols-3 gap-10 justify-center">
           {postFeature.length > 0 && postFeature.map((post) =>
             <PostFeatureItem data={post} key={post.id}></PostFeatureItem>)}

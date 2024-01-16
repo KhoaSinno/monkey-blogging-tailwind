@@ -1,8 +1,12 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+import slugify from "slugify";
 
 const PostMeta = ({ typeColor = 'primary', data }) => {
     if (!data) return null
-    const { username, createdAt } = data
+    const { username, createdAt, fullname } = data
+    console.log("🚀 ~ PostMeta ~ data:", data)
+    console.log("🚀 ~ PostMeta ~ fullname:", fullname)
     let textCl = ''
     let iconCl = ''
     switch (typeColor) {
@@ -24,7 +28,7 @@ const PostMeta = ({ typeColor = 'primary', data }) => {
             <span><svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
                 <circle cx="3" cy="3" r="3" fill={iconCl} />
             </svg></span>
-            <span>{username || 'Not Author'}</span>
+            <NavLink to={slugify(fullname || '', { lower: true })}>{username || '...'}</NavLink>
         </div>
     );
 };
