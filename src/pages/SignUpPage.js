@@ -13,6 +13,7 @@ import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from 'contexts/auth-context';
+import slugify from "slugify";
 
 export const ContextSignUp = createContext()
 
@@ -43,25 +44,29 @@ const SignUpPage = () => {
 
     const handleSignUp = async (values) => {
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-            await updateProfile(userCredential.user, { displayName: values.fullname });
+            if (!isValid) return;
+            await createUserWithEmailAndPassword(auth, values.email, values.password);
+            await updateProfile(auth.currentUser, {
+                displayName: values.fullname,
+                photoURL:
+                    "https://images.unsplash.com/photo-1490750967868-88aa4486c946?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+            });
+
             //add new user in doc
             const newUser = {
                 // id: userCredential.user.uid,
                 fullname: values.fullname,
                 email: values.email,
-                password: values.password
+                password: values.password,
+                username: slugify(values.fullname, { lower: true }),
             }
 
-            // const usersCollection = collection(db, 'users');
-            // await addDoc(usersCollection, newUser);
-            // console.log("🚀 ~ file: SignUpPage.js:67 ~ handleSignUp ~ newUser:", newUser)
-            await setDoc(doc(db, "users", userCredential.user.uid), newUser);
-            console.log(userCredential.user)
-            // await setUserInfo(userCredential.user)
+            await setDoc(doc(db, "users", auth.currentUser.uid), newUser);
+            console.log(auth.currentUser)
+            // await setUserInfo(auth.currentUser)
 
-            navigate('/')
             toast.success('Register success!')
+            navigate('/')
         } catch (error) {
             console.error(error);
             if (error.code === 'auth/email-already-in-use') {

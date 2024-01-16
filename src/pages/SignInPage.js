@@ -49,6 +49,8 @@ const SignInPage = () => {
     // handle function
     const handleSignIn = async (values) => {
         try {
+            if (!isValid) return;
+
             const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
 
             // handle success
@@ -56,7 +58,7 @@ const SignInPage = () => {
             console.log("Logged in user:", userCredential.user);
             toast.success('Sign in success!');
 
-            // navigate('/');
+            navigate('/');
         } catch (error) {
             console.error(error);
             if (error.code === 'auth/invalid-email' || error.code === 'auth/user-disabled' || error.code === 'auth/user-not-found') {
