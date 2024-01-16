@@ -104,6 +104,7 @@ const SignInPage = () => {
                             errors={errors}
                             classContainer='m-[1.5rem_auto_.3rem]'
                         >{toggle ? <IconEyeOpen onClick={changeToggle}></IconEyeOpen> : <IconEyeClose onClick={changeToggle}></IconEyeClose>}</Field>
+                        <p className='flex gap-2 max-w-[500px] m-[1.5rem_auto_.3rem]'>You haven't been had an account ? <NavLink to='/sign-up' className='font-semibold text-green-400'>SignUp</NavLink></p>
                         <Button
                             type="submit"
                             disabled={isSubmitting}

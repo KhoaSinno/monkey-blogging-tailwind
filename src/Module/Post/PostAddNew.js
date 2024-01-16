@@ -41,6 +41,7 @@ const defaultValues = {
 }
 const PostAddNew = () => {
   const { userInfo } = useAuth();
+  console.log("🚀 ~ PostAddNew ~ userInfo:", userInfo)
   const { control, watch, setValue, handleSubmit, getValues, reset } = useForm({
     mode: "onChange",
     defaultValues: defaultValues,
@@ -55,6 +56,25 @@ const PostAddNew = () => {
 
   const [category, setCategory] = useState({});
   // side effect 
+  useEffect(() => {
+    async function fetchUserData() {
+      if (!userInfo.email) return;
+      const q = query(
+        collection(db, "users"),
+        where("email", "==", userInfo.email)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setValue("user", {
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+    }
+    fetchUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInfo.email]);
+
   useEffect(() => {
     const getPost = async () => {
       const categoriesCol = collection(db, 'categories');
@@ -79,11 +99,11 @@ const PostAddNew = () => {
     _values.image = image
     _values.user = userInfo.uid
 
-    await addDoc(collection(db, "posts"), _values);
     console.log("🚀 ~ file: PostAddNew.js:57 ~ addPostHandler ~ e:", _values)
-    reset(defaultValues)
-    setCategory({})
-    handleResetUpload()
+    // await addDoc(collection(db, "posts"), { ..._values, image, createdAt: serverTimestamp() });
+    // reset(defaultValues)
+    // setCategory({})
+    // handleResetUpload()
   }
   const handleClickOption = (item) => {
     setValue('category', item.id)

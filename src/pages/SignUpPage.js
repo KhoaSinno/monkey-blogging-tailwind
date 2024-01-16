@@ -9,7 +9,7 @@ import { Field } from 'components/field';
 import { Button } from 'components/button';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from 'firebase-app/firebase-config';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from 'contexts/auth-context';
@@ -47,14 +47,19 @@ const SignUpPage = () => {
             await updateProfile(userCredential.user, { displayName: values.fullname });
             //add new user in doc
             const newUser = {
-                id: userCredential.user.uid,
+                // id: userCredential.user.uid,
+                fullname: values.fullname,
                 email: values.email,
                 password: values.password
             }
-            const usersCollection = collection(db, 'users');
-            await addDoc(usersCollection, newUser);
-            console.log("🚀 ~ file: SignUpPage.js:67 ~ handleSignUp ~ newUser:", newUser)
-            await setUserInfo(newUser)
+
+            // const usersCollection = collection(db, 'users');
+            // await addDoc(usersCollection, newUser);
+            // console.log("🚀 ~ file: SignUpPage.js:67 ~ handleSignUp ~ newUser:", newUser)
+            await setDoc(doc(db, "users", userCredential.user.uid), newUser);
+            console.log(userCredential.user)
+            // await setUserInfo(userCredential.user)
+
             navigate('/')
             toast.success('Register success!')
         } catch (error) {
@@ -108,6 +113,7 @@ const SignUpPage = () => {
                             errors={errors}
                             classContainer='m-[1.5rem_auto_.3rem]'
                         >{toggle ? <IconEyeOpen onClick={changeToggle}></IconEyeOpen> : <IconEyeClose onClick={changeToggle}></IconEyeClose>}</Field>
+                        <p className='flex gap-2 max-w-[500px] m-[1.5rem_auto_.3rem]'>You already have an account ? <NavLink to='/sign-in' className='font-semibold text-green-400'>Login</NavLink></p>
                         <Button
                             type="submit"
                             disabled={isSubmitting}

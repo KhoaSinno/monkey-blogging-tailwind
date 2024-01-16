@@ -17,18 +17,39 @@ import { Link, NavLink } from "react-router-dom";
 const HomeFeature = () => {
   const [postFeature, setPostFeature] = useState({});
 
+  // useEffect(() => {
+  //   const fetchPostFeature = async () => {
+  //     const q = query(collection(db, "posts"), where("hot", "==", true), where('status', '==', 1), limit(3));
+  //     const querySnapshot = await getDocs(q);
+  //     const result = []
+  //     querySnapshot.forEach((doc) => {
+  //       result.push({ id: doc.id, ...doc.data() })
+  //     });
+  //     setPostFeature(result)
+  //   }
+  //   fetchPostFeature()
+  // }, []);
+
   useEffect(() => {
-    const fetchPostFeature = async () => {
-      const q = query(collection(db, "posts"), where("hot", "==", true), where('status', '==', 1), limit(3));
-      const querySnapshot = await getDocs(q);
-      const result = []
-      querySnapshot.forEach((doc) => {
-        result.push({ id: doc.id, ...doc.data() })
+    const colRef = collection(db, "posts");
+    const queries = query(
+      colRef,
+      where("status", "==", 1),
+      where("hot", "==", true),
+      limit(3)
+    );
+    onSnapshot(queries, (snapshot) => {
+      const results = [];
+      snapshot.forEach((doc) => {
+        results.push({
+          id: doc.id,
+          ...doc.data(),
+        });
       });
-      setPostFeature(result)
-    }
-    fetchPostFeature()
+      setPostFeature(results);
+    });
   }, []);
+  if (postFeature.length <= 0) return null;
   console.log('PostFeature: ', postFeature)
   return (
     <div className="homeFeature-container mb-10">

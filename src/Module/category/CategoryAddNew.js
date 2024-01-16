@@ -1,3 +1,4 @@
+import DashboardHeading from "Module/dashboard/DashboardHeading";
 import { Button } from "components/button";
 import { Radio } from "components/checkbox";
 import { Field, FieldCheckboxes } from "components/field";
@@ -5,7 +6,6 @@ import { Input } from "components/input";
 import { Label } from "components/label";
 import { db } from "firebase-app/firebase-config";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import DashboardHeading from "module/dashboard/DashboardHeading";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
