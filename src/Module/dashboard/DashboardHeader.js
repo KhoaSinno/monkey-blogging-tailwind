@@ -50,7 +50,7 @@ const DashboardHeader = () => {
           Write new post
         </Button>
         <Link to="/profile" className="header-avatar">
-          <img src={userInfo?.avatar} alt="" />
+          <img src={userInfo?.avatar} alt="avt user" />
         </Link>
       </div>
     </DashboardHeaderStyles>

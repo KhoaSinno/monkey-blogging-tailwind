@@ -9,7 +9,8 @@ import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firesto
 import { db } from 'firebase-app/firebase-config';
 
 const PostFeatureItem = ({ data }) => {
-    const { id, hot, category: categoryId, image, title, user, slug } = data
+    const { id, hot, category: categoryId, image, title, user, slug, createdAt } = data
+    console.log("🚀 ~ PostFeatureItem ~ data:", data)
     const [category, setCategory] = useState({});
     const [users, setUsers] = useState({});
 
@@ -36,7 +37,6 @@ const PostFeatureItem = ({ data }) => {
         };
         fetchUser()
     }, [user]);
-    console.log('postFeature users', users)
     return (
         <div className="cart-item w-auto h-[17rem] relative text-white  rounded-xl">
             <NavLink to={slug}>
@@ -44,7 +44,7 @@ const PostFeatureItem = ({ data }) => {
                 <div className="content absolute inset-0 p-5 rounded-xl">
                     <div className="flex justify-between">
                         <PostCategory to={category.slug}>{category.name}</PostCategory>
-                        <PostMeta data={users}></PostMeta>
+                        <PostMeta data={users} createdAt={createdAt}></PostMeta>
                     </div>
                     <PostTitle className='text-xl font-medium pt-5'>{title} </PostTitle>
                 </div>
