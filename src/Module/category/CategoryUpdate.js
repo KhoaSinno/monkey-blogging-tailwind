@@ -1,12 +1,12 @@
 import { Button } from "components/button";
 import { Radio } from "components/checkbox";
-import { Field } from "components/field";
+import { Field, FieldCheckboxes } from "components/field";
 import { Input } from "components/input";
 import { Label } from "components/label";
 import { db } from "firebase-app/firebase-config";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
 import DashboardHeading from "Module/dashboard/DashboardHeading";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -27,25 +27,44 @@ const CategoryUpdate = () => {
   const [params] = useSearchParams();
   const categoryId = params.get("id");
   const navigate = useNavigate();
+  const watchStatus = watch('status')
+  const [loading, setLoading] = useState(false);
+
+  //side effect
   useEffect(() => {
-    async function fetchData() {
-      const colRef = doc(db, "categories", categoryId);
-      const singleDoc = await getDoc(colRef);
-      reset(singleDoc.data());
+    const getCategory = async () => {
+      const categoryDocRef = doc(db, "categories", categoryId);
+      const categoryDocSnap = await getDoc(categoryDocRef);
+
+      if (categoryDocSnap.exists()) {
+        const categoryData = { id: categoryDocSnap.id, ...categoryDocSnap.data() };
+        reset(categoryData)
+      } else {
+        console.error("Category not found");
+      }
     }
-    fetchData();
+    getCategory()
+      .catch(console.error);
   }, [categoryId, reset]);
-  const watchStatus = watch("status");
+
+  // side method
   const handleUpdateCategory = async (values) => {
-    const colRef = doc(db, "categories", categoryId);
-    await updateDoc(colRef, {
-      name: values.name,
-      slug: slugify(values.slug || values.name, { lower: true }),
-      status: Number(values.status),
-    });
-    toast.success("Update category successfully!");
-    navigate("/manage/category");
-  };
+    try {
+      setLoading(true)
+      const _values = { ...values }
+      _values.slug = slugify(values.slug || values.name)
+      _values.status = +values.status
+      const categoriesRef = doc(db, "categories", categoryId);
+      await updateDoc(categoriesRef, { ..._values, createdAt: serverTimestamp() })
+      toast.success('Update success!')
+      navigate('/manage/category')
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
   if (!categoryId) return null;
   return (
     <div>
@@ -55,27 +74,29 @@ const CategoryUpdate = () => {
       ></DashboardHeading>
       <form onSubmit={handleSubmit(handleUpdateCategory)}>
         <div className="form-layout">
-          <Field>
-            <Label>Name</Label>
-            <Input
-              control={control}
-              name="name"
-              placeholder="Enter your category name"
-            ></Input>
-          </Field>
-          <Field>
-            <Label>Slug</Label>
-            <Input
-              control={control}
-              name="slug"
-              placeholder="Enter your slug"
-            ></Input>
-          </Field>
+          <Field
+            id='name'
+            control={control}
+            placeholder='Enter your category name'
+            content='Name:'
+            typeInput='text'
+            required
+            full
+            classContainer='mb-5 lg:mb-0'
+          ></Field>
+          <Field
+            id='slug'
+            control={control}
+            placeholder='Enter your slug'
+            content='Slug:'
+            typeInput='text'
+            full
+          ></Field>
         </div>
         <div className="form-layout">
-          <Field>
+          <div>
             <Label>Status</Label>
-            <div className="flex flex-wrap gap-x-5">
+            <FieldCheckboxes>
               <Radio
                 name="status"
                 control={control}
@@ -92,15 +113,15 @@ const CategoryUpdate = () => {
               >
                 Unapproved
               </Radio>
-            </div>
-          </Field>
+            </FieldCheckboxes>
+          </div>
         </div>
         <Button
-          kind="primary"
-          className="mx-auto w-[200px]"
           type="submit"
-          disabled={isSubmitting}
-          isLoading={isSubmitting}
+          classBtn="gradientBtnPrimary text-white w-[250px] "
+          isSubmitting={loading}
+          disabled={loading}
+          classContainer='md:col-span-2 items-center'
         >
           Update category
         </Button>
