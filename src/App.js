@@ -6,6 +6,7 @@ import DashboardPage from "pages/DashboardPage";
 import PostManage from "Module/Post/PostManage";
 import PostAddNew from "Module/Post/PostAddNew";
 import CategoryAddNew from "Module/category/CategoryAddNew";
+import CategoryManage from "Module/category/CategoryManage";
 
 // const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
 const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
@@ -46,6 +47,10 @@ function App() {
                 path="/manage/add-category"
                 element={<CategoryAddNew></CategoryAddNew>}
               ></Route>
+              <Route
+                path="/manage/category"
+                element={<CategoryManage></CategoryManage>}
+              ></Route>
               {/* <Route
                 path="/manage/update-post"
                 element={<PostUpdate></PostUpdate>}
@@ -54,10 +59,7 @@ function App() {
                 path="/manage/posts"
                 element={<PostManage></PostManage>}
               ></Route>
-              <Route
-                path="/manage/category"
-                element={<CategoryManage></CategoryManage>}
-              ></Route>
+          
               <Route
                 path="/manage/update-category"
                 element={<CategoryUpdate></CategoryUpdate>}

@@ -37,7 +37,6 @@ const HomeFeature = () => {
     });
   }, []);
   if (postFeature.length <= 0) return null;
-  console.log('PostFeature: ', postFeature)
   return (
     <div className="homeFeature-container mb-10">
       <div className="container">

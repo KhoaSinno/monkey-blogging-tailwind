@@ -4,6 +4,7 @@ const TableStyles = styled.div`
   overflow-x: auto;
   background-color: white;
   border-radius: 10px;
+  
   table {
     width: 100%;
   }
@@ -14,14 +15,16 @@ const TableStyles = styled.div`
   td {
     vertical-align: middle;
     white-space: nowrap;
+    text-align: center;
+
   }
   th {
-    padding: 20px 30px;
+    padding: 20px 20px;
     font-weight: 600;
-    text-align: left;
+    text-align: center;
   }
   td {
-    padding: 15px 30px;
+    padding: 15px 20px;
   }
   tbody {
   }

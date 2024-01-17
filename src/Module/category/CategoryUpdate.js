@@ -5,7 +5,7 @@ import { Input } from "components/input";
 import { Label } from "components/label";
 import { db } from "firebase-app/firebase-config";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import DashboardHeading from "module/dashboard/DashboardHeading";
+import DashboardHeading from "Module/dashboard/DashboardHeading";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";

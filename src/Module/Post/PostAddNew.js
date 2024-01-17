@@ -173,7 +173,6 @@ const PostAddNew = () => {
                 ))}
             </Dropdown.List>
             <CategorySelected category={category}></CategorySelected>
-
           </Dropdown>
           {selectCategory?.name && (
             <span className="inline-block p-3 text-sm font-medium text-green-600 rounded-lg bg-green-50">

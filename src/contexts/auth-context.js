@@ -16,7 +16,6 @@ function AuthProvider(props) {
           collection(db, "users"),
           where("email", "==", user.email)
         );
-        console.log("🚀 ~ onAuthStateChanged ~ user:", user)
         // onSnapshot(docRef, (snapshot) => {
         //   snapshot.forEach((doc) => {
         //     console.log("🚀 ~ snapshot.forEach ~ doc:", doc.data())

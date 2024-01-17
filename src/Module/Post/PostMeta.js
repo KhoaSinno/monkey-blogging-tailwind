@@ -15,7 +15,6 @@ const formDate = (_day, _month) => {
     return `${month} ${_day}`
 }
 const PostMeta = ({ typeColor = 'primary', data, createdAt }) => {
-    console.log("🚀 ~ PostMeta ~ data:", data)
     const [date, setDate] = useState('');
     let textCl = ''
     let iconCl = ''

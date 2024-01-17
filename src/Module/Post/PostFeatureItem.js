@@ -10,7 +10,6 @@ import { db } from 'firebase-app/firebase-config';
 
 const PostFeatureItem = ({ data }) => {
     const { id, hot, category: categoryId, image, title, user, slug, createdAt } = data
-    console.log("🚀 ~ PostFeatureItem ~ data:", data)
     const [category, setCategory] = useState({});
     const [users, setUsers] = useState({});
 
