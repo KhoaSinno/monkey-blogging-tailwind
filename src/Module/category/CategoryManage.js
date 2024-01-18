@@ -4,20 +4,28 @@ import { Button } from "components/button";
 import { LabelStatus } from "components/label";
 import { Table } from "components/table";
 import { db } from "firebase-app/firebase-config";
-import { collection, deleteDoc, doc, getDocs, onSnapshot } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { categoryStatus } from "utils/constants";
 import { toast } from "react-toastify";
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
+import { debounce } from "lodash";
 
 const CategoryManage = () => {
   const [categories, setCategories] = useState({});
   const navigate = useNavigate();
+  const [filter, setFilter] = useState('');
+
+  // side effect
   useEffect(() => {
     const getPost = async () => {
       const categoriesCol = collection(db, "categories");
-      onSnapshot(categoriesCol, (querySnapshot) => {
+      const q = query(categoriesCol,
+        where("name", ">=", filter.toLowerCase()),
+        where("name", "<=", filter.toLowerCase() + "\uf8ff"));
+      const colRef = filter ? q : categoriesCol
+      onSnapshot(colRef, (querySnapshot) => {
         const categories = [];
         querySnapshot.forEach((doc) => {
           categories.push({ id: doc.id, ...doc.data() });
@@ -27,7 +35,7 @@ const CategoryManage = () => {
     }
     getPost()
       .catch(console.error);
-  }, []);
+  }, [filter]);
 
   // side method
   const handleDelete = async (category) => {
@@ -56,6 +64,10 @@ const CategoryManage = () => {
     }
   }
 
+  const handleOnchangeFilter = debounce((e) => {
+    setFilter(e.target.value)
+  }, 300)
+
   console.log(categories)
   return (
     <div>
@@ -65,6 +77,13 @@ const CategoryManage = () => {
       >
         <Button to='/manage/add-category' classBtn="bg-green-400 transition-all text-white px-4  hover:bg-green-500">Create new category</Button>
       </DashboardHeading>
+      <input type="text"
+        name="search"
+        className="p-2 border border-gray-400 rounded-lg"
+        placeholder="Search..."
+        onChange={handleOnchangeFilter}
+      />
+
       <Table>
         <thead>
           <tr>
