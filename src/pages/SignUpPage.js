@@ -9,11 +9,12 @@ import { Field } from 'components/field';
 import { Button } from 'components/button';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from 'firebase-app/firebase-config';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from 'contexts/auth-context';
 import slugify from "slugify";
+import { userRole, userStatus } from 'utils/constants';
 
 export const ContextSignUp = createContext()
 
@@ -54,11 +55,14 @@ const SignUpPage = () => {
 
             //add new user in doc
             const newUser = {
-                // id: userCredential.user.uid,
                 fullname: values.fullname,
                 email: values.email,
                 password: values.password,
                 username: slugify(values.fullname, { lower: true }),
+                avatar: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+                status: userStatus.ACTIVE,
+                role: userRole.USER,
+                createdAt: serverTimestamp()
             }
 
             await setDoc(doc(db, "users", auth.currentUser.uid), newUser);

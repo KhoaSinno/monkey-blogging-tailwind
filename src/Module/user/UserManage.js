@@ -106,7 +106,9 @@ const UserManage = () => {
       <DashboardHeading
         title="Users"
         desc="Manage your user"
-      ></DashboardHeading>
+      >
+        <Button to='/manage/add-user' classBtn="bg-green-400 transition-all text-white px-4  hover:bg-green-500">Create new user</Button>
+      </DashboardHeading>
       <input type="text"
         name="search"
         className="p-2 border border-gray-400 rounded-lg"
@@ -131,10 +133,10 @@ const UserManage = () => {
               <td title={user.id}>{user.id.slice(0, 8) + '...'}</td>
               <td className="whitespace-nowrap">
                 <div className="flex items-center justify-center ml-0 gap-3">
-                  <img src="https://images.unsplash.com/photo-1608889175123-8ee362201f81?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="avatar" className="w-10 h-10 rounded-lg flex-shrink-0 object-cover" />
+                  <img src={user?.avatar} alt="avatar" className="w-10 h-10 rounded-lg flex-shrink-0 object-cover" />
                   <div className="flex-1 text-start">
                     <h3>{user?.fullname}</h3>
-                    <time className="italic text-gray-400 whitespace-normal">{new Date().toLocaleDateString()}</time>
+                    <time className="italic text-gray-400 whitespace-normal">{new Date(user?.createdAt?.seconds * 1000).toLocaleDateString('vi-VI')}</time>
                     {/* <time>{new Date(user?.createAt?.seconds * 1000 + user?.createAt?.nanoseconds / 1000000)}</time> */}
                   </div>
                 </div>
