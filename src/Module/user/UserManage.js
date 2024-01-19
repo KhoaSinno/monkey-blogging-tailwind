@@ -131,17 +131,16 @@ const UserManage = () => {
           {users.length > 0 && users.map((user) =>
             <tr key={user.id}>
               <td title={user.id}>{user.id.slice(0, 8) + '...'}</td>
-              <td className="whitespace-nowrap">
-                <div className="flex items-center justify-center ml-0 gap-3">
+              <td className="whitespace-nowrap p-5 w-[300px]">
+                <div className="flex items-center justify-start ml-0 gap-2">
                   <img src={user?.avatar} alt="avatar" className="w-10 h-10 rounded-lg flex-shrink-0 object-cover" />
                   <div className="flex-1 text-start">
-                    <h3>{user?.fullname}</h3>
+                    <h3>{user?.fullname.slice(0, 10) + '...'}</h3>
                     <time className="italic text-gray-400 whitespace-normal">{new Date(user?.createdAt?.seconds * 1000).toLocaleDateString('vi-VI')}</time>
-                    {/* <time>{new Date(user?.createAt?.seconds * 1000 + user?.createAt?.nanoseconds / 1000000)}</time> */}
                   </div>
                 </div>
               </td>
-              <td><span className="">{user?.username}</span></td>
+              <td><span className="text-ellipsis">{user?.username}</span></td>
               <td>{user?.email}</td>
               <td>
                 <UserStatus>{+user?.status}</UserStatus>

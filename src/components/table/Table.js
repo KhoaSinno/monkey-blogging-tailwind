@@ -24,7 +24,7 @@ const TableStyles = styled.div`
     text-align: center;
   }
   td {
-    padding: 15px 20px;
+    padding: 15px 30px;
   }
   tbody {
   }

@@ -131,7 +131,6 @@ const PostAddNew = () => {
           placeholder='Enter your title'
           content='Title:'
           typeInput='text'
-          // errors={errors}
           required
           full
           classContainer='m-0'
@@ -142,7 +141,6 @@ const PostAddNew = () => {
           placeholder='Enter your slug'
           content='Slug:'
           typeInput='text'
-          // errors={errors}
           required
           full
           classContainer='m-0'

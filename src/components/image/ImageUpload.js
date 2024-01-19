@@ -8,6 +8,9 @@ const ImageUpload = (props) => {
     progress = 0,
     image = "",
     handleDeleteImage = () => { },
+    title = 'Choose photo',
+    srcImage = "/img-upload.png",
+    fullRadius,
     ...rest
   } = props;
   return (
@@ -27,16 +30,16 @@ const ImageUpload = (props) => {
       {!image && progress === 0 && (
         <div className="flex flex-col items-center text-center pointer-events-none">
           <img
-            src="/img-upload.png"
+            src={srcImage}
             alt="upload-img"
-            className="max-w-[80px] mb-5"
+            className={`max-w-[80px] mb-5`}
           />
-          <p className="font-semibold">Choose photo</p>
+          <p className="font-semibold">{title}</p>
         </div>
       )}
       {image && (
         <Fragment>
-          <img src={image} className="object-cover w-full h-full" alt="" />
+          <img src={image} className={`object-cover w-full h-full ` + fullRadius ? 'rounded-full h-full w-full object-cover' : ''} alt="" />
           <button
             type="button"
             className="absolute z-10 flex items-center justify-center invisible w-16 h-16 text-red-500 transition-all bg-white rounded-full opacity-0 cursor-pointer group-hover:opacity-60 group-hover:visible"
@@ -59,7 +62,7 @@ const ImageUpload = (props) => {
           </button>
         </Fragment>
       )}
-      {!image && (
+      {!image && !fullRadius && (
         <div
           className="absolute bottom-0 left-0 w-10 h-1 transition-all bg-green-400 image-upload-progress"
           style={{

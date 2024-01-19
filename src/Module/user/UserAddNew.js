@@ -13,6 +13,8 @@ import { db } from "firebase-app/firebase-config";
 import { toast } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
+import ImageUpload from "components/image/ImageUpload";
+import useImageFirebase from "hooks/useImageFirebase";
 
 const schema = yup.object({
   fullname: yup.string().required("Please enter your fullname"),
@@ -31,13 +33,14 @@ const defaultValues = {
   username: "",
   email: "",
   password: "",
+  avatar: '',
   status: userStatus.ACTIVE,
   role: userRole.USER,
   createdAt: new Date()
 }
 const UserAddNew = () => {
   const {
-    control, setValue, formState: { errors, isSubmitting, isValid }, watch, handleSubmit, reset } = useForm({
+    control, setValue, getValues, formState: { errors, isSubmitting, isValid }, watch, handleSubmit, reset } = useForm({
       mode: "onChange",
       defaultValues: defaultValues,
       resolver: yupResolver(schema),
@@ -45,6 +48,7 @@ const UserAddNew = () => {
   const watchStatus = watch('status')
   const watchRole = watch('role')
   const [loading, setLoading] = useState(false);
+  const { progress, image, handleResetUpload, handleSelectImage, handleDeleteImage } = useImageFirebase(setValue, getValues)
 
   // side effect
 
@@ -54,17 +58,19 @@ const UserAddNew = () => {
     try {
       setLoading(true)
       const _values = { ...values }
-      _values.slug = slugify(values.slug || values.name)
+      _values.username = slugify(values.username || values.fullname,
+        { lower: true, replacement: ' ', trim: true })
       _values.status = +values.status
-      console.log("🚀 ~ handleAddNewCategory ~ values:", _values)
+      _values.role = +values.role
+      _values.avatar = image
 
       await addDoc(collection(db, "users"), { ..._values, createdAt: serverTimestamp() });
-      console.log("🚀 ~ handleAddNewUser ~ values:", values)
-
-      toast.success('Add new Category Success')
+      console.log("🚀 ~ handleAddNewUser ~ values:", _values)
+      handleResetUpload()
+      toast.success('Add new User Success')
       reset(defaultValues)
     } catch (error) {
-      console.log("🚀 ~ addPostHandler ~ error:", error)
+      console.log(error)
       toast.error(error)
       setLoading(false)
     } finally {
@@ -78,6 +84,18 @@ const UserAddNew = () => {
         desc="Add new user to system"
       ></DashboardHeading>
       <form onSubmit={handleSubmit(handleAddNewUser)}>
+        <div className="h-[250px] w-[250px] rounded-full border border-slate-500 mx-auto mb-10">
+          <ImageUpload
+            onChange={handleSelectImage}
+            handleDeleteImage={handleDeleteImage}
+            className="h-[250px] border-none text-2xl text-slate-500 rounded-full"
+            progress={progress}
+            image={image}
+            title='Your avatar'
+            srcImage='/user.png'
+            fullRadius
+          ></ImageUpload>
+        </div>
         <div className="form-layout">
           <Field
             id='fullname'
@@ -97,7 +115,6 @@ const UserAddNew = () => {
             placeholder='Enter your category username'
             content='Username:'
             typeInput='text'
-            required
             full
             classContainer='mb-5 lg:mb-0'
           ></Field>
