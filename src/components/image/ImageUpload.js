@@ -39,7 +39,7 @@ const ImageUpload = (props) => {
       )}
       {image && (
         <Fragment>
-          <img src={image} className={`object-cover w-full h-full ` + fullRadius ? 'rounded-full h-full w-full object-cover' : ''} alt="" />
+          <img src={image} className={fullRadius ? `object-cover w-full h-full rounded-full` : ' h-full w-full object-cover'} alt="" />
           <button
             type="button"
             className="absolute z-10 flex items-center justify-center invisible w-16 h-16 text-red-500 transition-all bg-white rounded-full opacity-0 cursor-pointer group-hover:opacity-60 group-hover:visible"

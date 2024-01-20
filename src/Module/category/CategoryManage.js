@@ -5,11 +5,11 @@ import { LabelStatus } from "components/label";
 import { Table } from "components/table";
 import { db } from "firebase-app/firebase-config";
 import { collection, deleteDoc, doc, getDocs, limit, onSnapshot, query, startAfter, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
-import { categoryStatus } from "utils/constants";
-import Swal from 'sweetalert2'
-import { useNavigate } from "react-router-dom";
 import { debounce } from "lodash";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
+import { categoryStatus } from "utils/constants";
 
 const ITEMS_PER_PAGE = 5
 const CategoryManage = () => {

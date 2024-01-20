@@ -15,6 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
 import ImageUpload from "components/image/ImageUpload";
 import useImageFirebase from "hooks/useImageFirebase";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object({
   fullname: yup.string().required("Please enter your fullname"),
@@ -49,6 +50,7 @@ const UserAddNew = () => {
   const watchRole = watch('role')
   const [loading, setLoading] = useState(false);
   const { progress, image, handleResetUpload, handleSelectImage, handleDeleteImage } = useImageFirebase(setValue, getValues)
+  const navigate = useNavigate();
 
   // side effect
 
@@ -69,9 +71,9 @@ const UserAddNew = () => {
       handleResetUpload()
       toast.success('Add new User Success')
       reset(defaultValues)
+      navigate('/manage/user')
     } catch (error) {
       console.log(error)
-      toast.error(error)
       setLoading(false)
     } finally {
       setLoading(false)

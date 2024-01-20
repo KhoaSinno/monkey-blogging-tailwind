@@ -1,4 +1,3 @@
-import useFirebaseImage from "hooks/useFirebaseImage";
 import Toggle from "components/toggle/Toggle";
 import slugify from "slugify";
 import React, { useEffect, useState } from "react";
@@ -25,9 +24,7 @@ import {
   where,
 } from "firebase/firestore";
 import DashboardHeading from "Module/dashboard/DashboardHeading";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import useImageFirebase from "hooks/useImageFirebase";
-import { useDropdown } from "components/dropdown/dropdown-context";
 import CategorySelected from "Module/category/CategorySelected";
 
 const defaultValues = {
@@ -49,12 +46,11 @@ const PostAddNew = () => {
   const watchStatus = watch("status"); // custom input radio so i use watch to control
   const watchHot = watch("hot");
   const { progress, image, handleResetUpload, handleSelectImage, handleDeleteImage } = useImageFirebase(setValue, getValues)
-
   const [categories, setCategories] = useState([]);
   const [selectCategory, setSelectCategory] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [category, setCategory] = useState({});
+
   // side effect 
   useEffect(() => {
     async function fetchUserData() {
@@ -79,7 +75,6 @@ const PostAddNew = () => {
     const getPost = async () => {
       const categoriesCol = collection(db, 'categories');
       const q = query(categoriesCol, where('status', '==', 1))
-
       const querySnapshot = await getDocs(q);
       const categories = []
       querySnapshot.forEach((doc) => {
@@ -99,10 +94,9 @@ const PostAddNew = () => {
     try {
       setLoading(true)
       const _values = { ...values }
-      _values.slug = slugify(values.slug || values.title)
+      _values.slug = slugify(values.slug || values.title, { lower: true })
       _values.status = +values.status
       _values.image = image
-      _values.user = userInfo.uid
 
       console.log("🚀 ~ file: PostAddNew.js:57 ~ values:", _values)
       await addDoc(collection(db, "posts"), { ..._values, image, createdAt: serverTimestamp() });
@@ -115,13 +109,18 @@ const PostAddNew = () => {
     } finally {
       setLoading(false)
     }
-
   }
-  const handleClickOption = (item) => {
-    setValue('category', item.id)
+  const handleClickOption = async (item) => {
+    const docRef = doc(db, "categories", item.id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setValue('category', { id: docSnap.id, ...docSnap.data() })
+      console.log("Document data:", docSnap.data());
+    } else {
+      console.log("No such document!");
+    }
     setCategory(item)
   }
-
   return (
     <>
       <DashboardHeading title="Add post" desc="Add new post"></DashboardHeading>
@@ -142,7 +141,6 @@ const PostAddNew = () => {
           placeholder='Enter your slug'
           content='Slug:'
           typeInput='text'
-          required
           full
           classContainer='m-0'
         ></Field>
