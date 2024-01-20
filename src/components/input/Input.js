@@ -3,17 +3,21 @@ import React, { useContext } from 'react';
 import { useController } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { ContextSignIn } from 'pages/SignInPage';
+import { ContextUserUpdate } from 'Module/user/UserUpdate';
 
 const Input = ({ id: name, control, isToggleShowHide, typeInput, ...props }) => {
 
     const signUpData = useContext(ContextSignUp);
     const signInData = useContext(ContextSignIn);
+    const userUpdateData = useContext(ContextUserUpdate);
 
     let type = 'text'
     if (signUpData) {
         type = signUpData?.type
-    } else {
+    } else if (signInData) {
         type = signInData?.type
+    } else if (userUpdateData) {
+        type = userUpdateData?.type
     }
     const {
         field,

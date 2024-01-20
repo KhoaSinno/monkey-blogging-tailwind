@@ -24,8 +24,8 @@ const UserManage = () => {
     const getPost = async () => {
       const usersCol = collection(db, "users");
       const q1 = query(usersCol,
-        where("name", ">=", filter.toLowerCase()),
-        where("name", "<=", filter.toLowerCase() + "\uf8ff"));
+        where("fullname", ">=", filter.toLowerCase()),
+        where("fullname", "<=", filter.toLowerCase() + "\uf8ff"));
       const q2 = query(usersCol, limit(ITEMS_PER_PAGE))
       const colRef = filter ? q1 : q2
 
@@ -51,11 +51,11 @@ const UserManage = () => {
     });
   }, []);
   // side method
-  const handleDelete = async (category) => {
+  const handleDelete = async (user) => {
     try {
-      const docRef = doc(db, 'categories', category.id);
+      const docRef = doc(db, 'users', user.id);
       Swal.fire({
-        title: `Delete "${category.name}". Are you sure ? `,
+        title: `Delete "${user.name}". Are you sure ? `,
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
@@ -67,7 +67,7 @@ const UserManage = () => {
           await deleteDoc(docRef);
           Swal.fire({
             title: "Deleted!",
-            text: `Delete success category: ${category.name}.`,
+            text: `Delete success user: ${user.name}.`,
             icon: "success"
           });
         }

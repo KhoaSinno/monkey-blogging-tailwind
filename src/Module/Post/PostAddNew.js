@@ -93,6 +93,7 @@ const PostAddNew = () => {
   useEffect(() => {
     document.title = 'Monkey Blogging - Add new Post'
   }, []);
+
   // handle function
   const addPostHandler = async (values) => {
     try {
