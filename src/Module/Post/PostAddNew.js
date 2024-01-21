@@ -43,6 +43,7 @@ const PostAddNew = () => {
     mode: "onChange",
     defaultValues: defaultValues,
   });
+
   const watchStatus = watch("status"); // custom input radio so i use watch to control
   const watchHot = watch("hot");
   const { progress, image, handleResetUpload, handleSelectImage, handleDeleteImage } = useImageFirebase(setValue, getValues)
@@ -103,6 +104,7 @@ const PostAddNew = () => {
       reset(defaultValues)
       setCategory({})
       handleResetUpload()
+      toast.success('Add new success!')
     } catch (error) {
       console.log("🚀 ~ addPostHandler ~ error:", error)
       setLoading(false)

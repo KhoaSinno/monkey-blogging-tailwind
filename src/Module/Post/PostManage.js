@@ -17,12 +17,12 @@ import {
   where,
 } from "firebase/firestore";
 import { debounce } from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { postStatus, userRole } from "utils/constants";
 
-const POST_PER_PAGE = 10;
+const POST_PER_PAGE = 6;
 
 const PostManage = () => {
   const [postList, setPostList] = useState([]);
@@ -62,11 +62,12 @@ const PostManage = () => {
     fetchData();
   }, [filter]);
   const { userInfo } = useAuth();
+  console.log("🚀 ~ PostManage ~ userInfo:", userInfo)
   async function handleDeletePost(postId) {
-    if (userInfo?.role !== userRole.ADMIN) {
-      Swal.fire("Failded", "You have no right to do this action", "warning");
-      return;
-    }
+    // if (userInfo?.role !== userRole.ADMIN) {
+    //   Swal.fire("Failded", "You have no right to do this action", "warning");
+    //   return;
+    // }
     const docRef = doc(db, "posts", postId);
     Swal.fire({
       title: "Are you sure?",
@@ -168,8 +169,8 @@ const PostManage = () => {
                         alt=""
                         className="w-[66px] h-[55px] rounded object-cover"
                       />
-                      <div className="flex-1">
-                        <h3 className="font-semibold">{post.title}</h3>
+                      <div className="flex-1 overflow-hidden text-start">
+                        <h3 className="font-semibold  truncate ...">{post.title}</h3>
                         <time className="text-sm text-gray-500">
                           Date: {formatDate}
                         </time>
@@ -184,7 +185,7 @@ const PostManage = () => {
                   </td>
                   <td>{renderPostStatus(post.status)}</td>
                   <td>
-                    <div className="flex items-center text-gray-500 gap-x-3">
+                    <div className="flex items-center text-gray-500 gap-x-1">
                       <ActionView
                         onClick={() => navigate(`/${post.slug}`)}
                       ></ActionView>
@@ -203,11 +204,9 @@ const PostManage = () => {
             })}
         </tbody>
       </Table>
-      {total > postList.length && (
+      {(total > postList.length && !filter) && (
         <div className="mt-10 text-center">
-          <Button className="mx-auto w-[200px]" onClick={handleLoadMorePost}>
-            Load more
-          </Button>
+          <Button onClick={handleLoadMorePost} classBtn="bg-green-400 transition-all text-white px-4  hover:bg-green-500" classContainer='w-[230px] m-auto mt-5' >Load more...</Button>
         </div>
       )}
     </div>
