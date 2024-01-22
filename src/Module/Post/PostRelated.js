@@ -2,7 +2,7 @@ import Heading from "components/layout/Heading";
 import { db } from "firebase-app/firebase-config";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import PostItem from "./PostItem";
+import PostNewestItem from "./PostNewestItem";
 
 const PostRelated = ({ categoryId = "" }) => {
   const [posts, setPosts] = useState([]);
@@ -25,10 +25,10 @@ const PostRelated = ({ categoryId = "" }) => {
   if (!categoryId || posts.length <= 0) return null;
   return (
     <div className="post-related">
-      <Heading>Bài viết liên quan</Heading>
-      <div className="grid-layout grid-layout--primary">
+      <Heading>Relation post</Heading>
+      <div className="grid grid-cols-2 gap-5 md:grid-cols-4 lg:gap-10 py-3">
         {posts.map((item) => (
-          <PostItem key={item.id} data={item}></PostItem>
+          <PostNewestItem key={item.id} data={item} heightImg='200px' ></PostNewestItem>
         ))}
       </div>
     </div>

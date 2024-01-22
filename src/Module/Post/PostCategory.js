@@ -5,6 +5,7 @@ const PostCategory = ({ className = '', children, to = '', bgColor = 'primary' }
     switch (bgColor) {
         case 'primary':
             bgColor = 'bg-[#F3EDFF]'
+            // bgColor = 'bg-red-500'
             break;
         case 'secondary':
             bgColor = 'bg-[#FFF]'

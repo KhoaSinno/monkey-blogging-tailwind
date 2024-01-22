@@ -24,7 +24,7 @@ const HomeNewest = () => {
     <div className="homeNewest-container mb-10">
       <div className="container">
         <Heading>Newest</Heading>
-        <div className="grid grid-cols-2 gap-10 justify-center">
+        {/* <div className="grid grid-cols-2 gap-10 justify-center">
           <PostNewestItem heightImg="auto"></PostNewestItem>
           <div className="grid grid-rows-3 gap-y-7 bg-[#F3EDFF] px-6 py-5 rounded-xl">
             <PostNewestItem typeDirection='row'></PostNewestItem>
@@ -32,13 +32,12 @@ const HomeNewest = () => {
             <PostNewestItem typeDirection='row'></PostNewestItem>
           </div>
         </div>
-        {/* last */}
         <div className="grid grid-cols-2 gap-5 md:grid-cols-4 lg:gap-10 py-14 ">
           <PostNewestItem heightImg='200px'></PostNewestItem>
           <PostNewestItem heightImg='200px'></PostNewestItem>
           <PostNewestItem heightImg='200px'></PostNewestItem>
           <PostNewestItem heightImg='200px'></PostNewestItem>
-        </div>
+        </div> */}
       </div>
     </div >
   );

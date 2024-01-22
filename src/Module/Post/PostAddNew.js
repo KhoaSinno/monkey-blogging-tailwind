@@ -100,7 +100,13 @@ const PostAddNew = () => {
       _values.image = image
 
       console.log("🚀 ~ file: PostAddNew.js:57 ~ values:", _values)
-      await addDoc(collection(db, "posts"), { ..._values, image, createdAt: serverTimestamp() });
+      await addDoc(collection(db, "posts"), {
+        ..._values,
+        categoryId: _values.category.id,
+        userId: _values.user.id,
+        image,
+        createdAt: serverTimestamp()
+      });
       reset(defaultValues)
       setCategory({})
       handleResetUpload()

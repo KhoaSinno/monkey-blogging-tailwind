@@ -11,6 +11,7 @@ import PostImage from "Module/Post/PostImage";
 import PostCategory from "Module/Post/PostCategory";
 import PostMeta from "Module/Post/PostMeta";
 import AuthorBox from "components/author/AuthorBox";
+import PostRelated from "Module/Post/PostRelated";
 // import PostRelated from "Module/Post/PostRelated";
 const PostDetailsPageStyles = styled.div`
   padding-bottom: 100px;
@@ -157,7 +158,7 @@ const PostDetailsPage = () => {
             ></div>
             <AuthorBox userId={user.id}></AuthorBox>
           </div>
-          {/* <PostRelated categoryId={postInfo?.category?.id}></PostRelated> */}
+          <PostRelated categoryId={postInfo?.category?.id}></PostRelated>
         </div>
       </Layout>
     </PostDetailsPageStyles>
