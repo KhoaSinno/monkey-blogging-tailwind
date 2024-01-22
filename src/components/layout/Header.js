@@ -20,7 +20,6 @@ const menuLink = [
 
 const Header = () => {
     const { userInfo } = useAuth()
-    console.log("🚀 ~ file: Header.js:23 ~ Header ~ userInfo:", userInfo)
     return (
         <div className='pt-5'>
             <div className="container">

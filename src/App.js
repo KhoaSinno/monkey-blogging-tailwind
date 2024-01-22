@@ -12,6 +12,7 @@ import UserManage from "Module/user/UserManage";
 import UserAddNew from "Module/user/UserAddNew";
 import UserUpdate from "Module/user/UserUpdate";
 import PostUpdate from "Module/Post/PostUpdate";
+import PostDetailsPage from "pages/PostDetailsPage";
 
 // const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
 const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
@@ -34,11 +35,11 @@ function App() {
               path="/category/:slug"
               element={<CategoryPage></CategoryPage>}
             ></Route>
+          */}
             <Route
               path="/:slug"
               element={<PostDetailsPage></PostDetailsPage>}
             ></Route>
-             */}
             <Route element={<DashboardLayout></DashboardLayout>}>
               <Route
                 path="/dashboard"

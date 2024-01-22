@@ -17,6 +17,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import slugify from "slugify";
 import { categoryStatus, postStatus } from "utils/constants";
+import 'react-quill/dist/quill.snow.css';
+import ReactQuill, { Quill } from 'react-quill';
+import ImageUploader from 'quill-image-uploader';
+import 'quill-image-uploader/dist/quill.imageUploader.min.css';
+Quill.register('modules/imageUploader', ImageUploader);
+
 
 const PostUpdate = () => {
     const {
@@ -42,6 +48,7 @@ const PostUpdate = () => {
     const [loading, setLoading] = useState(false);
     const [category, setCategory] = useState({});
     const [user, setUser] = useState({});
+    const [content, setContent] = useState('');
     //side effect
     useEffect(() => {
         const getPosts = async () => {
@@ -53,6 +60,7 @@ const PostUpdate = () => {
                 reset(postData)
                 setCategory(postData.category || {})
                 setUser(postData.user || {})
+                setContent(postData?.content || '')
                 console.log("🚀 ~ getPosts ~ postData:", postData)
             } else {
                 console.error("Post not found");
@@ -119,6 +127,29 @@ const PostUpdate = () => {
         }
         setCategory(item)
     }
+    const handleUpdateContent = async (values) => {
+        const usersRef = doc(db, "posts", postId);
+        await updateDoc(usersRef, { content })
+    }
+    const modules = {
+        toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote'],
+            [{ header: 1 }, { header: 2 }], // custom button values
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            ['link', 'image']
+        ],
+        imageUploader: {
+            upload: (file) => {
+                return new Promise((resolve, reject) => {
+                    resolve('https://source.unsplash.com/FV3GConVSss/900x500');
+                    // setTimeout(() => {
+                    // }, 3500);
+                });
+            }
+        }
+    }
     if (!postId) return null;
     console.log(category)
     return (
@@ -127,7 +158,7 @@ const PostUpdate = () => {
                 title="Update post"
                 desc={`Update your post id: ${postId}`}
             ></DashboardHeading>
-            <form onSubmit={handleSubmit(handleUpdatePost)} className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <form onSubmit={handleSubmit(handleUpdateContent)} className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <Field
                     id='title'
                     control={control}
@@ -179,6 +210,12 @@ const PostUpdate = () => {
                             {selectCategory?.name}
                         </span>
                     )}
+                </div>
+                <div className="md:col-span-2 flex flex-col gap-3">
+                    <Label>Content post</Label>
+                    <div className="entry-content">
+                        <ReactQuill modules={modules} theme="snow" value={content} onChange={setContent} />
+                    </div>
                 </div>
                 <div className="flex gap-x-5 items-center">
                     <Label>Feature post</Label>

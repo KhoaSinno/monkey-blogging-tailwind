@@ -33,7 +33,7 @@ const HomeNewest = () => {
           </div>
         </div>
         {/* last */}
-        <div className="grid  grid-cols-4 gap-10 py-14">
+        <div className="grid grid-cols-2 gap-5 md:grid-cols-4 lg:gap-10 py-14 ">
           <PostNewestItem heightImg='200px'></PostNewestItem>
           <PostNewestItem heightImg='200px'></PostNewestItem>
           <PostNewestItem heightImg='200px'></PostNewestItem>
