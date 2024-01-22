@@ -17,6 +17,7 @@ import slugify from "slugify";
 import { UserStatus, userRole, userStatus } from "utils/constants";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup";
+import { Textarea } from "components/textarea";
 
 export const ContextUserUpdate = createContext()
 const schema = yup.object({
@@ -183,6 +184,13 @@ const UserUpdate = () => {
                         >
                             {toggle ? <IconEyeOpen onClick={changeToggle}></IconEyeOpen> : <IconEyeClose onClick={changeToggle}></IconEyeClose>}
                         </Field>
+                    </div>
+                    <div className="md:col-span-2">
+                        <Label>Description:</Label>
+                        <Textarea
+                            control={control}
+                            name='description'
+                        ></Textarea>
                     </div>
                     <div className="form-layout">
                         <div className="pb-5 lg:pb-0 flex flex-col gap-2">

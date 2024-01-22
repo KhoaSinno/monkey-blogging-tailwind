@@ -45,7 +45,7 @@ const PostMeta = ({ typeColor = 'primary', data, createdAt }) => {
     }, [createdAt?.nanoseconds, createdAt?.seconds])
     if (!data) return null
     return (
-        <div className={`flex justify-start items-center gap-2 ${textCl}`}>
+        <div className={`flex justify-start items-center gap-2 font-medium ${textCl}`}>
             <span>{date || ''}</span>
             <span><svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
                 <circle cx="3" cy="3" r="3" fill={iconCl} />

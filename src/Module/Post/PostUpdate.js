@@ -11,7 +11,7 @@ import { collection, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, u
 import useImageFirebase from "hooks/useImageFirebase";
 import CategorySelected from "Module/category/CategorySelected";
 import DashboardHeading from "Module/dashboard/DashboardHeading";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -21,6 +21,8 @@ import 'react-quill/dist/quill.snow.css';
 import ReactQuill, { Quill } from 'react-quill';
 import ImageUploader from 'quill-image-uploader';
 import 'quill-image-uploader/dist/quill.imageUploader.min.css';
+import axios from 'axios';
+import { imgbbAPI } from "config/apiConfig";
 Quill.register('modules/imageUploader', ImageUploader);
 
 
@@ -30,7 +32,7 @@ const PostUpdate = () => {
         reset,
         watch,
         handleSubmit,
-        formState: { isSubmitting }, setValue, getValues
+        formState: { isSubmitting, isValid }, setValue, getValues
     } = useForm({
         mode: "onChange",
         defaultValues: {},
@@ -49,6 +51,7 @@ const PostUpdate = () => {
     const [category, setCategory] = useState({});
     const [user, setUser] = useState({});
     const [content, setContent] = useState('');
+
     //side effect
     useEffect(() => {
         const getPosts = async () => {
@@ -128,28 +131,50 @@ const PostUpdate = () => {
         setCategory(item)
     }
     const handleUpdateContent = async (values) => {
-        const usersRef = doc(db, "posts", postId);
-        await updateDoc(usersRef, { content })
-    }
-    const modules = {
-        toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote'],
-            [{ header: 1 }, { header: 2 }], // custom button values
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            ['link', 'image']
-        ],
-        imageUploader: {
-            upload: (file) => {
-                return new Promise((resolve, reject) => {
-                    resolve('https://source.unsplash.com/FV3GConVSss/900x500');
-                    // setTimeout(() => {
-                    // }, 3500);
-                });
-            }
+        try {
+            if (!isValid) return
+            setLoading(true)
+            const usersRef = doc(db, "posts", postId);
+            await updateDoc(usersRef, { ...values, content })
+            toast.success('Update success!')
+            navigate('/manage/posts')
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+        } finally {
+            setLoading(false)
         }
+
     }
+    const modules = useMemo(
+        () => ({
+            toolbar: [
+                ["bold", "italic", "underline", "strike"],
+                ["blockquote"],
+                [{ header: 1 }, { header: 2 }], // custom button values
+                [{ list: "ordered" }, { list: "bullet" }],
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                ["link", "image"],
+            ],
+            imageUploader: {
+                // imgbbAPI
+                upload: async (file) => {
+                    const bodyFormData = new FormData();
+                    bodyFormData.append("image", file);
+                    const response = await axios({
+                        method: "post",
+                        url: imgbbAPI,
+                        data: bodyFormData,
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    });
+                    return response.data.data.url;
+                },
+            },
+        }),
+        []
+    );
     if (!postId) return null;
     console.log(category)
     return (
@@ -260,7 +285,7 @@ const PostUpdate = () => {
                     disabled={loading}
                     classContainer='md:col-span-2 items-center'
                 >
-                    Add new post
+                    Update Post
                 </Button>
             </form >
         </div>

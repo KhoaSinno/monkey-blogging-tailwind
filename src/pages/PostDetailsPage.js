@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-// import PostRelated from "module/post/PostRelated";
 import NotFoundPage from "./NotFoundPage";
 import Layout from "components/layout/Layout";
-// import AuthorBox from "components/author/AuthorBox";
 import { Link, useParams } from "react-router-dom";
 import { db } from "firebase-app/firebase-config";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
@@ -13,6 +11,7 @@ import PostImage from "Module/Post/PostImage";
 import PostCategory from "Module/Post/PostCategory";
 import PostMeta from "Module/Post/PostMeta";
 import AuthorBox from "components/author/AuthorBox";
+// import PostRelated from "Module/Post/PostRelated";
 const PostDetailsPageStyles = styled.div`
   padding-bottom: 100px;
   .post {
@@ -122,13 +121,14 @@ const PostDetailsPage = () => {
   }, [slug]);
 
   if (!user) return null
+  if (!slug && postInfo.title) return <NotFoundPage></NotFoundPage>
   return (
     <PostDetailsPageStyles>
       <Layout>
         <div className="container">
           <div className="post-header">
             <PostImage
-              url={postInfo.image}
+              srcSet={postInfo?.image}
               classContainer='w-[85%] h-[420px] lg:w-[60%] lg:h-[500px]'
               classImg='absolute'
             ></PostImage>
@@ -137,7 +137,7 @@ const PostDetailsPage = () => {
                 {postInfo.category?.name}
               </PostCategory>
               <h1 className="post-heading">{postInfo.title}</h1>
-              <PostMeta></PostMeta>
+              <PostMeta data={postInfo.user} createdAt={postInfo.createdAt} typeColor="secondary"></PostMeta>
               {/* Check if user role is ADMIN then can edit the post */}
               <Link
                 to={`/manage/update-post?id=${postInfo.id}`}
