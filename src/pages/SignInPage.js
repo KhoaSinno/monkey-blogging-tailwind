@@ -41,10 +41,10 @@ const SignInPage = () => {
     const { userInfo } = useAuth()
 
     // side effect
-    useEffect(() => {
-        if (!userInfo) navigate('sign-up')
-        else navigate('/')
-    }, []);
+    // useEffect(() => {
+    //     if (!userInfo) navigate('sign-up')
+    //     else navigate('/')
+    // }, []);
 
     // handle function
     const handleSignIn = async (values) => {

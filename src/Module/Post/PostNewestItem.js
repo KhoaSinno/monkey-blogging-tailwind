@@ -5,7 +5,7 @@ import PostTitle from './PostTitle';
 import PostMeta from './PostMeta';
 import PostImage from './PostImage';
 
-const PostNewestItem = ({ classContainer = '', heightImg = 'h-full', typeDirection = 'col', data }) => {
+const PostNewestItem = ({ classContainer = '', heightImg = 'h-full', typeDirection = 'col', data, imageFull }) => {
     console.log('data', data)
     const {
         id: postId, slug: slugPost, image, title,
@@ -13,12 +13,13 @@ const PostNewestItem = ({ classContainer = '', heightImg = 'h-full', typeDirecti
         user
     } = data
     return (
-        <div className={typeDirection === 'col' ? `cart-item w-auto text-white rounded-xl ${classContainer}` : `cart-item-row h-[180px] overflow-y-auto`}>
+        <div className={typeDirection === 'col' ? `cart-item w-auto text-white rounded-xl ${classContainer}` : `cart-item-row h-[180px]  `}>
             <Link to={`/${slugPost}`} className={typeDirection === 'col' ? `` : `flex gap-x-3`}>
                 <PostImage
                     srcSet={image}
                     classContainer={typeDirection === 'col' ? heightImg : `w-1/3 max-h-[125px] mt-[8%]`}
                     typeDirection={typeDirection}
+                    imageFull={imageFull}
                 ></PostImage>
                 <div className={typeDirection === 'col' ? `content text-[#232323] py-3 rounded-xl` : `w-2/3`}>
                     <PostCategory

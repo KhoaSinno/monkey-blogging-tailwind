@@ -1,26 +1,27 @@
 import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/auth-context";
-import DashboardLayout from "Module/dashboard/DashboardLayout";
-import DashboardPage from "pages/DashboardPage";
-import PostManage from "Module/Post/PostManage";
-import PostAddNew from "Module/Post/PostAddNew";
-import CategoryAddNew from "Module/category/CategoryAddNew";
-import CategoryManage from "Module/category/CategoryManage";
-import CategoryUpdate from "Module/category/CategoryUpdate";
-import UserManage from "Module/user/UserManage";
-import UserAddNew from "Module/user/UserAddNew";
-import UserUpdate from "Module/user/UserUpdate";
-import PostUpdate from "Module/Post/PostUpdate";
-import PostDetailsPage from "pages/PostDetailsPage";
-import CategoryPage from "pages/CategoryPage";
-import UserPage from "pages/UserPage";
+import BlogPage from "pages/BlogPage";
+import ProfilePage from "pages/ProfilePage";
 
-// const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
 const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
 const SignInPage = React.lazy(() => import("pages/SignInPage"));
 const HomePage = React.lazy(() => import("pages/HomePage"));
 const NotFoundPage = React.lazy(() => import("pages/NotFoundPage"));
+const DashboardLayout = React.lazy(() => import("Module/dashboard/DashboardLayout"));
+const DashboardPage = React.lazy(() => import("pages/DashboardPage"));
+const PostManage = React.lazy(() => import("Module/Post/PostManage"));
+const PostAddNew = React.lazy(() => import("Module/Post/PostAddNew"));
+const PostUpdate = React.lazy(() => import("Module/Post/PostUpdate"));
+const CategoryAddNew = React.lazy(() => import("Module/category/CategoryAddNew"));
+const CategoryManage = React.lazy(() => import("Module/category/CategoryManage"));
+const CategoryUpdate = React.lazy(() => import("Module/category/CategoryUpdate"));
+const UserManage = React.lazy(() => import("Module/user/UserManage"));
+const UserAddNew = React.lazy(() => import("Module/user/UserAddNew"));
+const UserUpdate = React.lazy(() => import("Module/user/UserUpdate"));
+const PostDetailsPage = React.lazy(() => import("pages/PostDetailsPage"));
+const CategoryPage = React.lazy(() => import("pages/CategoryPage"));
+const UserPage = React.lazy(() => import("pages/UserPage"));
 
 function App() {
   return (
@@ -32,6 +33,11 @@ function App() {
             <Route path="/sign-in" element={<SignInPage></SignInPage>}></Route>
             <Route path="/" element={<HomePage></HomePage>}></Route>
             <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
+
+            <Route
+              path="/blog"
+              element={<BlogPage></BlogPage>}
+            ></Route>
             <Route
               path="/category/:slug"
               element={<CategoryPage></CategoryPage>}
@@ -45,6 +51,10 @@ function App() {
               element={<PostDetailsPage></PostDetailsPage>}
             ></Route>
             <Route element={<DashboardLayout></DashboardLayout>}>
+              <Route
+                path="/profile/:id"
+                element={<ProfilePage></ProfilePage>}
+              ></Route>
               <Route
                 path="/dashboard"
                 element={<DashboardPage></DashboardPage>}

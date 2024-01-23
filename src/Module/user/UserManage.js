@@ -10,6 +10,7 @@ import { userRole, userStatus } from "utils/constants";
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
 import { debounce } from "lodash";
+import { useAuth } from "contexts/auth-context";
 
 const ITEMS_PER_PAGE = 5
 const UserManage = () => {
@@ -99,8 +100,8 @@ const UserManage = () => {
     const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
     setLastDoc(lastVisible)
   }
-
-  console.log(users)
+  const { userInfo } = useAuth();
+  if (userInfo.role !== userRole.ADMIN) return null;
   return (
     <div>
       <DashboardHeading

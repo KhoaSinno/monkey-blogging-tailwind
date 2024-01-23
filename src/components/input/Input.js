@@ -4,12 +4,14 @@ import { useController } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { ContextSignIn } from 'pages/SignInPage';
 import { ContextUserUpdate } from 'Module/user/UserUpdate';
+import { ContextProfile } from 'pages/ProfilePage';
 
 const Input = ({ id: name, control, isToggleShowHide, typeInput, ...props }) => {
 
     const signUpData = useContext(ContextSignUp);
     const signInData = useContext(ContextSignIn);
     const userUpdateData = useContext(ContextUserUpdate);
+    const userProfileData = useContext(ContextProfile);
 
     let type = 'text'
     if (signUpData) {
@@ -18,7 +20,10 @@ const Input = ({ id: name, control, isToggleShowHide, typeInput, ...props }) => 
         type = signInData?.type
     } else if (userUpdateData) {
         type = userUpdateData?.type
+    } else if (userProfileData) {
+        type = userProfileData?.type
     }
+
     const {
         field,
         fieldState: { invalid, isTouched, isDirty },

@@ -3,13 +3,14 @@ import { ActionDelete, ActionEdit, ActionView } from "components/action";
 import { Button } from "components/button";
 import { LabelStatus } from "components/label";
 import { Table } from "components/table";
+import { useAuth } from "contexts/auth-context";
 import { db } from "firebase-app/firebase-config";
 import { collection, deleteDoc, doc, getDocs, limit, onSnapshot, query, startAfter, where } from "firebase/firestore";
 import { debounce } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
-import { categoryStatus } from "utils/constants";
+import { categoryStatus, userRole } from "utils/constants";
 
 const ITEMS_PER_PAGE = 5
 const CategoryManage = () => {
@@ -99,7 +100,8 @@ const CategoryManage = () => {
     const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
     setLastDoc(lastVisible)
   }
-
+  const { userInfo } = useAuth();
+  if (userInfo.role !== userRole.ADMIN) return null;
   return (
     <div>
       <DashboardHeading

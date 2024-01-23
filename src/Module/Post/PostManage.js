@@ -122,8 +122,7 @@ const PostManage = () => {
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
     setLastDoc(lastVisible);
   };
-  // const { userInfo } = useAuth();
-  // if (userInfo.role !== userRole.ADMIN) return null;
+  if (userInfo.role !== userRole.ADMIN) return null;
   return (
     <div>
       <DashboardHeading

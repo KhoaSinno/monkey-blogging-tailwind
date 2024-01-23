@@ -5,21 +5,22 @@ import { Link, NavLink } from "react-router-dom";
 
 const menuLink = [
     {
-        url: '/',
+        url: '',
         title: 'Home',
     },
     {
-        url: '/blog',
+        url: 'blog',
         title: 'Blog',
     },
     {
-        url: '/contact',
+        url: 'contact',
         title: 'Contact',
     },
 ]
 
 const Header = () => {
     const { userInfo } = useAuth()
+    console.log("🚀 ~ Header ~ userInfo:", userInfo)
     return (
         <div className='pt-5'>
             <div className="container">
@@ -31,7 +32,7 @@ const Header = () => {
                         {menuLink.map(({ url, title }) =>
                             <ul key={title} className='font-semibold text-lg'>
                                 <li>
-                                    <Link to={`/${url}`}>{title}</Link>
+                                    <NavLink to={`/${url}`}>{title}</NavLink>
                                 </li>
                             </ul>)}
                     </div>
@@ -50,7 +51,7 @@ const Header = () => {
                             {userInfo ?
                                 <Button
                                     classBtn='gradientBtnPrimary px-5 text-white'
-                                    to='/profile'
+                                    to={`/profile/${userInfo?.id}`}
                                 >Welcome! {userInfo?.displayName || ''}</Button>
                                 :
                                 <Button

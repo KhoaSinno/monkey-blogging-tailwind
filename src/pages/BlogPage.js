@@ -4,21 +4,16 @@ import Layout from 'components/layout/Layout';
 import { db } from 'firebase-app/firebase-config';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
 
-const CategoryPage = () => {
-    const { slug } = useParams()
+const BlogPage = () => {
     const [posts, setPosts] = useState({});
-    console.log("🚀 ~ CategoryPage ~ posts:", posts)
+    console.log("🚀 ~ BlogPage ~ posts:", posts)
 
     // side effect
     useEffect(() => {
         const colRef = collection(db, "posts");
-        const queries = query(
-            colRef,
-            where("category.slug", "==", slug),
-        );
-        onSnapshot(queries, (snapshot) => {
+
+        onSnapshot(colRef, (snapshot) => {
             const results = [];
             snapshot.forEach((doc) => {
                 results.push({
@@ -28,13 +23,13 @@ const CategoryPage = () => {
             });
             setPosts(results);
         });
-    }, [slug]);
+    }, []);
     if (!posts) return null
     return (
         <Layout>
             <div className="container">
                 <div className='py-20'>
-                    <Heading>Category for {posts.length > 0 ? posts[0 || 1].category?.name : 'list'}</Heading>
+                    <Heading>List blog:</Heading>
                     <div className='grid grid-cols-2 gap-5 md:grid-cols-4 lg:gap-8 '>
                         {posts.length > 0 && posts.map((item) => (
                             <PostNewestItem key={item.id} data={item} heightImg='200px' ></PostNewestItem>
@@ -46,4 +41,4 @@ const CategoryPage = () => {
     );
 };
 
-export default CategoryPage;
+export default BlogPage;
