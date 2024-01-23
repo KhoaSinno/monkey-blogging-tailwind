@@ -43,7 +43,6 @@ export default function useFirebaseImage(
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
           setImage(downloadURL);
         });
       }

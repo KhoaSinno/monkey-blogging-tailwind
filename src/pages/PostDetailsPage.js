@@ -120,7 +120,9 @@ const PostDetailsPage = () => {
     }
     fetData()
   }, [slug]);
-
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [slug]);
   if (!user) return null
   if (!slug && postInfo.title) return <NotFoundPage></NotFoundPage>
   return (
@@ -134,7 +136,7 @@ const PostDetailsPage = () => {
               classImg='absolute'
             ></PostImage>
             <div className="post-info">
-              <PostCategory className="mb-6" to='/'>
+              <PostCategory className="mb-6" to={postInfo.category?.slug}>
                 {postInfo.category?.name}
               </PostCategory>
               <h1 className="post-heading">{postInfo.title}</h1>

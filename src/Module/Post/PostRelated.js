@@ -9,7 +9,7 @@ const PostRelated = ({ categoryId = "" }) => {
   useEffect(() => {
     const docRef = query(
       collection(db, "posts"),
-      where("categoryId", "==", categoryId)
+      where("category.id", "==", categoryId)
     );
     onSnapshot(docRef, (snapshot) => {
       const results = [];

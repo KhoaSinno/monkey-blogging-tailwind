@@ -16,7 +16,7 @@ const PostCategory = ({ className = '', children, to = '', bgColor = 'primary' }
     }
     return (
         <Link
-            to={to}
+            to={`/category/${to}`}
             className={`py-1 px-2 rounded-xl  text-[#6B6B6B]  ${className} ${bgColor}`}
         >{children}</Link>
     );

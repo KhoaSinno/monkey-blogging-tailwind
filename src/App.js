@@ -13,6 +13,8 @@ import UserAddNew from "Module/user/UserAddNew";
 import UserUpdate from "Module/user/UserUpdate";
 import PostUpdate from "Module/Post/PostUpdate";
 import PostDetailsPage from "pages/PostDetailsPage";
+import CategoryPage from "pages/CategoryPage";
+import UserPage from "pages/UserPage";
 
 // const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
 const SignUpPage = React.lazy(() => import("pages/SignUpPage"));
@@ -30,12 +32,14 @@ function App() {
             <Route path="/sign-in" element={<SignInPage></SignInPage>}></Route>
             <Route path="/" element={<HomePage></HomePage>}></Route>
             <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
-
-            {/* <Route
+            <Route
               path="/category/:slug"
               element={<CategoryPage></CategoryPage>}
             ></Route>
-          */}
+            <Route
+              path="/author/:slug"
+              element={<UserPage></UserPage>}
+            ></Route>
             <Route
               path="/:slug"
               element={<PostDetailsPage></PostDetailsPage>}

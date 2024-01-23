@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 
 const AuthorBox = ({ userId = "" }) => {
   const [user, setUser] = useState({});
-  console.log("🚀 ~ AuthorBox ~ user:", user)
   useEffect(() => {
     async function fetchUserData() {
       const docRef = doc(db, "users", userId);

@@ -16,15 +16,14 @@ function AuthProvider(props) {
           collection(db, "users"),
           where("email", "==", user.email)
         );
-        // onSnapshot(docRef, (snapshot) => {
-        //   snapshot.forEach((doc) => {
-        //     console.log("🚀 ~ snapshot.forEach ~ doc:", doc.data())
-        //     setUserInfo({
-        //       ...user,
-        //       ...doc.data(),
-        //     });
-        //   });
-        // });
+        onSnapshot(docRef, (snapshot) => {
+          snapshot.forEach((doc) => {
+            setUserInfo({
+              ...user,
+              ...doc.data(),
+            });
+          });
+        });
         setUserInfo(user);
       } else {
         setUserInfo(null);

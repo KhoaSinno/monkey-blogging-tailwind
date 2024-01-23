@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import PostCategory from './PostCategory';
 import PostTitle from './PostTitle';
 import PostMeta from './PostMeta';
@@ -14,10 +14,11 @@ const PostNewestItem = ({ classContainer = '', heightImg = 'h-full', typeDirecti
     } = data
     return (
         <div className={typeDirection === 'col' ? `cart-item w-auto text-white rounded-xl ${classContainer}` : `cart-item-row h-[180px] overflow-y-auto`}>
-            <NavLink to={slugPost} className={typeDirection === 'col' ? `` : `flex gap-x-3`}>
+            <Link to={`/${slugPost}`} className={typeDirection === 'col' ? `` : `flex gap-x-3`}>
                 <PostImage
                     srcSet={image}
                     classContainer={typeDirection === 'col' ? heightImg : `w-1/3 max-h-[125px] mt-[8%]`}
+                    typeDirection={typeDirection}
                 ></PostImage>
                 <div className={typeDirection === 'col' ? `content text-[#232323] py-3 rounded-xl` : `w-2/3`}>
                     <PostCategory
@@ -29,7 +30,7 @@ const PostNewestItem = ({ classContainer = '', heightImg = 'h-full', typeDirecti
                     >{title}</PostTitle>
                     <PostMeta data={user} createdAt={createdAt} typeColor='secondary'></PostMeta>
                 </div>
-            </NavLink>
+            </Link>
         </div>
     );
 };

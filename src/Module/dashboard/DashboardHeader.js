@@ -41,10 +41,10 @@ const DashboardHeader = () => {
   const { userInfo } = useAuth();
   return (
     <DashboardHeaderStyles>
-      <NavLink to="/" className="logo">
+      <Link to="/" className="logo">
         <img srcSet="/logo.png 2x" alt="monkey-blogging" className="logo" />
         <span className="hidden lg:inline-block">Monkey Blogging</span>
-      </NavLink>
+      </Link>
       <div className="header-right">
         <Button to="/manage/add-post" height="52px" classBtn='gradientBtnPrimary text-white'>
           Write new post

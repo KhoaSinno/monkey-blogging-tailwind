@@ -1,7 +1,7 @@
 import { Button } from 'components/button';
 import { useAuth } from 'contexts/auth-context';
 import React from 'react';
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const menuLink = [
     {
@@ -25,18 +25,18 @@ const Header = () => {
             <div className="container">
                 <div className="header-main grid grid-cols-2">
                     <div className="header-left flex justify-start items-center gap-x-9">
-                        <NavLink to='/' className='mr-8'>
+                        <Link to='/' className='mr-8'>
                             <img alt="monkey-blogging" srcSet="/logo.png 2x" className='max-w-[50px] ' />
-                        </NavLink>
+                        </Link>
                         {menuLink.map(({ url, title }) =>
                             <ul key={title} className='font-semibold text-lg'>
                                 <li>
-                                    <NavLink to={url}>{title}</NavLink>
+                                    <Link to={`/${url}`}>{title}</Link>
                                 </li>
                             </ul>)}
                     </div>
                     <div className="header-right flex items-center justify-end gap-x-16">
-                        <div className="search flex justify-center items-center w-full max-w-[320px] rounded-md bg-slate-200 ">
+                        {/* <div className="search flex justify-center items-center w-full max-w-[320px] rounded-md bg-slate-200 ">
                             <input type="text" placeholder='Search posts...' className='bg-slate-200 w-full rounded-l-md py-2 px-4 focus:bg-slate-100' />
                             <span className='px-1 bg-primary rounded-r-md hover:bg-green-600 cursor-pointer'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 18 17" fill="none" >
@@ -45,7 +45,7 @@ const Header = () => {
                                     <path d="M11.6665 12.2964C12.9671 12.1544 13.3706 11.8067 13.4443 10.6826" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
                                 </svg>
                             </span>
-                        </div>
+                        </div> */}
                         <div>
                             {userInfo ?
                                 <Button

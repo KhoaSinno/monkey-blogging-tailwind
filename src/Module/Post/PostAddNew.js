@@ -102,8 +102,6 @@ const PostAddNew = () => {
       console.log("🚀 ~ file: PostAddNew.js:57 ~ values:", _values)
       await addDoc(collection(db, "posts"), {
         ..._values,
-        categoryId: _values.category.id,
-        userId: _values.user.id,
         image,
         createdAt: serverTimestamp()
       });
